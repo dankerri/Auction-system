@@ -62,7 +62,6 @@ class Profile extends Component {
                     <Form.Item label="Neck name: ">
                     {getFieldDecorator('neckname', {})(
                         <Input placeholder={list.neckname}  />
-                        // <label>{list.neckname}</label>
                     )}
                     </Form.Item> 
                 </Form>
