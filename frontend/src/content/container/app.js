@@ -42,31 +42,6 @@ const data = [
     ),
   },
 ];
-
-// thunk data fetech action
-const fetechData = () => {
-  return dispatch => {  
-      dispatch(fetechDataBegin())
-      return fetch(theUrl + '/commodityList')
-      .then( res => res.json() )
-      .then(json => {
-          dispatch(fetechDataSuccess(json))
-          return json;
-      })
-      .catch(err => {
-          console.log(err)
-      })
-  }
-}
-const fetechDataBegin = () => ({
-  type: 'tFETECH_DATA_BEGIN'
-})
-const fetechDataSuccess = (json) => ({
-  type: 'tFETECH_DATA_SUCCESS',
-  payload: json
-})
-
-
 const Editor = ({
   onChange, onSubmit, submitting, value,
 }) => (
@@ -95,9 +70,10 @@ class App extends Component {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
-  componentDidMount() {
-      this.props.dispatch(fetechData())
-  }   
+
+  componentWillMount() {
+    this.props.dispatch({type: 'TEST_INIT'})
+  }
 
 
   handleSubmit = () => {
@@ -106,136 +82,99 @@ class App extends Component {
     }
   }
 
+  // render() {
+  //   const { list } = this.props
+  //   if( !list.loading && list.payload ) {
+  //     return(
+  //       <Com payload={this.props.list.payload} />
+  //     )
+  //   }
+
+  //   else {
+  //     return (
+  //       <h1>Loading page</h1>
+  //     )
+  //   }
+  // }
+
   render() {
-    // const value = ''
-    // const submitting = 'true'
-    const { list, auth } = this.props
-    
-    return(
-    <Layout>
-    <Header className="header">
-      <div className="logo" />
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={['3']}
-        style={{ lineHeight: '64px' }}
-      >
-        <Menu.Item key="1"><Link to="/user_profile">Profile</Link></Menu.Item>
-        <Menu.Item key="2"><Link to="/signup">Signup</Link></Menu.Item>
-        <Menu.Item key="3"><Link to="/">Home</Link></Menu.Item>
+    const { list } = this.props
+    if( !list.loading && list.payload ) {
+      return(
+      <Layout>
+      <Header className="header">
+        <div className="logo" />
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={['3']}
+          style={{ lineHeight: '64px' }}
+        >
+          <Menu.Item key="1"><Link to="/user_profile">Profile</Link></Menu.Item>
+          <Menu.Item key="2"><Link to="/signup">Signup</Link></Menu.Item>
+          <Menu.Item key="3"><Link to="/">Home</Link></Menu.Item>
 
-      </Menu>
-    </Header>
-    <Content style={{ padding: '0 50px' }}>
-      <Layout style={{ padding: '24px 0', background: '#fff' }}>
-        <Sider width={200} style={{ background: '#fff' }}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            style={{ height: '100%' }}
-          >
-              <Menu.Item key="1">书籍</Menu.Item>
-              <Menu.Item key="2">电子产品</Menu.Item>
-              <Menu.Item key="3">外快</Menu.Item>
-              <Menu.Item key="4">others</Menu.Item>
-          </Menu>
-        </Sider>
-        <Content style={{ padding: '0 24px', minHeight: 280, background: '#ECECEC', }}>
-          {
-            list.loading?<h1>Loading</h1>:<div>
-             {/* {
-               list.payload.map((item, index)=>{
-                 return <h1>{item.neckname}</h1>
-               })
-             }    */}
-             shit
-            </div>
+        </Menu>
+      </Header>
+      <Content style={{ padding: '0 50px' }}>
+        <Layout style={{ padding: '24px 0', background: '#fff' }}>
+          <Sider width={200} style={{ background: '#fff' }}>
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={['1']}
+              defaultOpenKeys={['sub1']}
+              style={{ height: '100%' }}
+            >
+                <Menu.Item key="1">书籍</Menu.Item>
+                <Menu.Item key="2">电子产品</Menu.Item>
+                <Menu.Item key="3">外快</Menu.Item>
+                <Menu.Item key="4">others</Menu.Item>
+            </Menu>
+          </Sider>
+          <Content style={{ padding: '0 24px', minHeight: 280, background: '#ECECEC', }}>
+          {list.payload.map((item, index)=> {
+              return <Card
+              key={item.id}
+              hoverable
+              style={{ width: 240, marginTop: 50 }}
+              cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+              >
+              <h1>{item.commodity_name}</h1>
+              <h5 style={{ color: 'red'}}>Price: {item.price}</h5>
+              <h5>{item.post}</h5>
+              <h5>Seller: {item.username}</h5>
+              <h2 style={{ color: 'gray'}}>{item.commodity_des}</h2>
+              </Card>})
           }
-        </Content>
-      </Layout>
-    </Content>
-    <Footer style={{ textAlign: 'center' }}>
-      Nangua ©2018 Created by Danker
-    </Footer>
-  </Layout>)
+          </Content> 
+        </Layout>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>
+        Nangua ©2018 Created by Danker
+      </Footer>
+      </Layout>)
+    } else {
+      return(
+        <h1>Loading</h1>
+      )
+    }
   }
+  
 }
-
-const Test = ({payload}) => {
-  console.log(payload)
-
-  return(
-    <div>
-      Test Component is loaded
-     </div>
+const Com = ({payload}) => {
+  return (
+    payload.map((item)=>{
+      return <h1>{item.commodity_name}</h1>
+    })
   )
 }
 
-
-
-
-// payload.map((item, index)=>
-//     <Card
-//       key={item.id}
-//       hoverable
-//       style={ {width: 400,  margin: '30px'} }
-//       cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-//     >
-//     <p>Commodity: {item.commodity_name}</p>
-//     <p>Price: {item.price}</p>
-//     <Collapse onChange={this.callback}
-//     >
-//     <Panel header="See Details">
-//       <p>Seller: {item.username}</p>
-//       <p>date: { item.post_time }</p>
-//       <p>Description: {item.commodity_des}</p>
-//     </Panel>
-//     <Panel header="Comments">
-//       <Comment 
-//         avatar={(
-//           <Abmitting={ submitting }
-//           value={value}
-//           />
-//           )}
-//       />
-//       <List
-//         className="comment-list"
-//         header={`${data.length} replies`}
-//         itemLayout="horizontal"
-//         dataSource={data}
-//         renderItem={props=> 
-//           <Covatar
-//           src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-//           alt="Han Solo"
-//           />
-//           )}
-
-//         content={(
-//           <Editor
-//           onChange={()=>{ console.log("clicked")}}
-//           onSubmit={ this.handleSubmit }
-//           summent {...props}/>}
-//       />
-//     </Panel>
-//     </Collapse>
-//     </Card>
-// )
-
-
 const mapStateToProps = state => ({
-  list: state.list
+  list: state.list,
+  auth: state.auth
 })
 
-// const mapDispatchToProps = dispatch => ({
-//   init: res => dispatch({
-//     type: 'INIT',
-//     res
-//   })
-// })
 
 export default connect(
   mapStateToProps,
-  // mapDispatchToProps
 )(App);

@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import thunk from 'redux-thunk'
+import { Provider } from 'react-redux';
+// import thunk from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
 import { createStore, applyMiddleware, compose } from 'redux';
 import 'antd/dist/antd.css';
 
 // self
-import RootRouter from './router/index';
+import RootRouter from './router/index'
 import rootReducer from './content/reducer/index'
-import { Provider } from 'react-redux';
-import * as serviceWorker from './serviceWorker';
+import rootSaga from './content/sagas'
+import * as serviceWorker from './serviceWorker'
 
 // init auth situation, if token exists, set auth.logged = true
 const checkAuth = () => {
@@ -25,13 +27,16 @@ const checkAuth = () => {
     }
 }
 
+const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
     rootReducer,
     compose(
-        applyMiddleware(thunk),
+        applyMiddleware(sagaMiddleware),
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()    
       )
 );
+sagaMiddleware.run(rootSaga)
+
 checkAuth();
 
 
