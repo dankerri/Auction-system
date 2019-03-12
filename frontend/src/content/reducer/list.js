@@ -46,6 +46,18 @@ const list = (state=[], action) => {
         
         default:
             return state
+
+        // Test
+        case 'TEST_INIT':
+            return {
+                loading: true
+            }
+
+        case 'TEST_INIT_SUCCESS':
+            return {
+                loading: false,
+                payload: action.payload
+            }
     }
 }
 
