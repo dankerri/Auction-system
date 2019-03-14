@@ -216,6 +216,33 @@ router.post('/signup', (req, res) => {
   )  
 })
 
+//=======================================================================================
+// user profile
+// get user profile
+router.post('/userProfile', checkJwt({ secret: secret }), (req, res)=>{
+  console.log("called " + req.body.username );
+  if( !req.user ) { res.send("Token in request is invaild.") }
+  else {
+      db.userPool.query(
+        squel.select()
+        .from("user")
+        .join("user_profile", null, "user.id = user_profile.user_id")
+        .field("user.id")
+        .field("username")
+        .field("neckname")
+        .where("username ='"+req.body.username+"' ")
+        .toString(), 
+        (err, row)=> {
+          res.send(row)
+      })
+  }
+})
+
+// update user profile
+router.put('userProfile', (req, res)=>{
+  console.log("called" + req.body.username)
+})
+
 
 
 

@@ -1,71 +1,43 @@
 import React, { Component } from  'react'
 import { connect } from 'react-redux'
 import { theUrl, tokenHeaders } from 'selfConfig'
-import { Form, Input } from 'antd'
-
-
-
-const fetechData = () => {
-    return dispatch => {  
-        dispatch(fetechDataBegin())
-        return fetch(theUrl + '/userProfile', {
-            headers: tokenHeaders(localStorage.getItem("token")),
-            method: 'post',
-            body: JSON.stringify({
-                username: localStorage.getItem("username")
-            })
-        })
-        .then( res => res.json() )
-        .then(json => {
-            dispatch(fetechDataSuccess(json))
-            return json;
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-}
-const fetechDataBegin = () => ({
-    type: 'FETECH_DATA_BEGIN'
-})
-const fetechDataSuccess = (json) => ({
-    type: 'FETECH_DATA_SUCCESS',
-    payload: json
-})
-
+import { Form, Input, Button } from 'antd'
 
 
 class Profile extends Component {
     constructor(props) {
         super(props)
-        // this.initPage = this.initPage.bind(this)
     }
 
     componentDidMount() {
-        // this.initPage(this.state.url)
-        this.props.dispatch(fetechData())
+        this.props.dispatch({type: 'GET_PROFILE', username: this.props.auth.username})
     }
 
     render() {
         const { getFieldDecorator } = this.props.form
-        const { list, auth } = this.props
-            if( list.loading ) {
-                return <div>Loding</div>
-            }
-            
-            return (
-                <Form>
-                    <Form.Item label="Username: ">
-                        <label> { list.username } </label>
-                    </Form.Item>
+        const { list } = this.props
+            if( !list.loading && list.payload ) {
+                return (
+                    <Form>
+                        <Form.Item label="Username: ">
+                            <label> { list.payload[0].username } </label>
+                        </Form.Item>
 
-                    <Form.Item label="Neck name: ">
-                    {getFieldDecorator('neckname', {})(
-                        <Input placeholder={list.neckname}  />
-                    )}
-                    </Form.Item> 
-                </Form>
-            )
+                        <Form.Item label="Neck name: ">
+                        {getFieldDecorator('neckname', {})(
+                            <Input placeholder={list.payload[0].neckname}  />
+                        )}
+                        </Form.Item> 
+
+                        <Form.Item>
+                            <Button type="primary">Update change</Button>
+                        </Form.Item>
+                    </Form>
+                )
+            }
+            else {
+                return <h1>Loading</h1>
+            }
 
 
     }

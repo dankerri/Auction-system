@@ -72,7 +72,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.props.dispatch({type: 'TEST_INIT'})
+    this.props.dispatch({type: 'HOME_INIT'})
   }
 
 
@@ -81,21 +81,6 @@ class App extends Component {
       return;
     }
   }
-
-  // render() {
-  //   const { list } = this.props
-  //   if( !list.loading && list.payload ) {
-  //     return(
-  //       <Com payload={this.props.list.payload} />
-  //     )
-  //   }
-
-  //   else {
-  //     return (
-  //       <h1>Loading page</h1>
-  //     )
-  //   }
-  // }
 
   render() {
     const { list } = this.props
