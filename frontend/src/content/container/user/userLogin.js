@@ -7,10 +7,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    login: (username, level) => {dispatch({
+    login: (username, level, id) => {dispatch({
         type: 'LOGIN',
         username: username,
-        level: level
+        level: level,
+        id: id
     })}
 })
 
@@ -37,12 +38,13 @@ const Login = (props) => {
         .then(res=> {
 
             // save token to redux
-            props.login(res.username, res.level)
+            props.login(res.username, res.level, res.id)
 
             // save token at browser
             localStorage.setItem('token', res.token)
             localStorage.setItem('level', res.level)
             localStorage.setItem('username', res.username)
+            localStorage.setItem('id', res.id)
 
             props.history.push("/user_profile")
 

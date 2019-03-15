@@ -9,6 +9,7 @@ const logoutButton = props => {
         localStorage.removeItem('token')
         localStorage.removeItem('level')
         localStorage.removeItem('username')
+        localStorage.removeItem('id')
         props.dispatch({
             type: 'LOGOUT'
         })

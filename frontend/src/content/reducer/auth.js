@@ -4,14 +4,16 @@ const auth = (state={}, action) => {
          return {
              username: '',
              logged: false,
-             level: ''
+             level: '',
+             id: -1
          }
         
         case 'LOGIN': 
          return {
-             username: action.username,
              logged: true,
-             level: action.level
+             username: action.username,
+             level: action.level,
+             id: action.id
          }
         default:
          return state

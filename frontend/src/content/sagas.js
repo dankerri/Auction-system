@@ -27,7 +27,9 @@ function* fetchProfile(action) {
     })
   }).then( res => res.json() )
   
-  yield put({ type: 'GET_PROFILE_SUCCESS', payload: payload })
+  // case res will return an ArrayBuffer, so the first item in array is what I WebAuthentication
+  // payload: payload[0]
+  yield put({ type: 'GET_PROFILE_SUCCESS', payload: payload[0] })
 }
 
 export default function* rootSaga() {

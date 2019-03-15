@@ -45,7 +45,7 @@ router.post('/adminLogin', (req, res) => {
           token: token,
           username: row[0].username,
           level: row[0].level,
-          phone: row[0].phone
+          phone: row[0].phone,
         })
       } else {
         console.log("unmatch")
@@ -64,7 +64,7 @@ router.post('/userLogin', (req, res) => {
     squel.select()
     .from("user")
     .join("user_profile", null, "user.id = user_profile.user_id")
-    .field("user.id")
+    .field("user.id as id")
     .field("username")
     .field("password")
     .field("level")
@@ -81,7 +81,8 @@ router.post('/userLogin', (req, res) => {
         res.send({
           token: token,
           username: row[0].username,
-          level: row[0].level
+          level: row[0].level,
+          id: row[0].id
         })
       } else {
         console.log("unmatch")
@@ -220,7 +221,6 @@ router.post('/signup', (req, res) => {
 // user profile
 // get user profile
 router.post('/userProfile', checkJwt({ secret: secret }), (req, res)=>{
-  console.log("called " + req.body.username );
   if( !req.user ) { res.send("Token in request is invaild.") }
   else {
       db.userPool.query(
@@ -239,8 +239,34 @@ router.post('/userProfile', checkJwt({ secret: secret }), (req, res)=>{
 })
 
 // update user profile
-router.put('userProfile', (req, res)=>{
-  console.log("called" + req.body.username)
+router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
+  if( !req.user ) { res.send("Token in request is invaild") }
+
+  else {
+    db.userPool.query(
+      squel.update()
+      .table("user_profile")
+      .set("neckname", req.body.neckname)
+      .where(`user_id = ${req.body.id}`)
+      .toString(),
+      (err, row) => {
+        if(err) {
+          console.log(err)
+          res.send({
+            edit: false
+          })      
+        } else {
+          res.send({
+            edit: true,
+            username: req.body.username,
+            neckname: req.body.neckname,
+            id: req.body.id
+          })
+        }
+      }
+    )
+  }
+  
 })
 
 

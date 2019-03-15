@@ -17,12 +17,15 @@ const checkAuth = () => {
     const token = localStorage.getItem('token')
     const level = localStorage.getItem('level')
     const username = localStorage.getItem('username')
+    // Will return a string instead of a number, so I use parseInt
+    const id = parseInt(localStorage.getItem('id'))
     if( token && level && username ) {
         store.dispatch({
             type: 'LOGIN',
             token: token,
             level: level,
-            username: username
+            username: username,
+            id: id
         })
     }
 }
