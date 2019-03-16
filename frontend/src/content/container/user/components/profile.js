@@ -1,7 +1,10 @@
 import React, { Component } from  'react'
 import { connect } from 'react-redux'
-import { theUrl, tokenHeaders } from 'selfConfig'
 import { Form, Input, Button } from 'antd'
+import { Route } from 'react-router-dom'
+
+import { theUrl, tokenHeaders } from 'selfConfig'
+import { UploadAvatar } from '../../public_component/index'
 
 
 class Profile extends Component {
@@ -12,7 +15,7 @@ class Profile extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const url = theUrl + '/editUserProfile';
+        const url = theUrl + '/editUserProfile'
         const payload = this.props.list.payload
         const auth = this.props.auth
 
@@ -52,6 +55,10 @@ class Profile extends Component {
             if( !list.loading && list.payload ) {
                 return (
                     <Form layout="" onSubmit={this.handleSubmit}>
+                        <Form.Item>
+                            <UploadAvatar />
+                        </Form.Item>
+                        
                         <Form.Item label="Username: ">
                             <label> { list.payload.username } </label>
                         </Form.Item>

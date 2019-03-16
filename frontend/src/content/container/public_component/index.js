@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
-import { Button } from 'antd'
+import { Button, Upload, Icon } from 'antd'
+
+import { theUrl } from 'selfConfig'
 
 // use this button to log out.
 const logoutButton = props => {
@@ -30,8 +32,29 @@ const PreRoute = ({ match, route}) => (
 )
 
 
+// Upload avatar
+const uploadButton = (
+    <div>
+      <Icon type={false ? 'loading' : 'plus'} />
+      <div className="ant-upload-text">Upload</div>
+    </div>
+);
+const UploadAvatar = () => (
+    <Upload
+    name="avatar"
+    listType="picture-card"
+    className="avatar-uploader"
+    showUploadList={false}
+    action={theUrl+"/upload"}
+    onChange={() => {}}
+    >
+         {false ? <img src={"imageUrl"} alt="avatar" /> : uploadButton}
+    </Upload>
+)
+
 // package all compoents
 export { 
     LogoutButton,
-    PreRoute
+    PreRoute,
+    UploadAvatar
 }

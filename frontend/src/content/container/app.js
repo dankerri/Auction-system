@@ -125,9 +125,9 @@ class App extends Component {
               cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
               >
               <h1>{item.commodity_name}</h1>
-              <h5 style={{ color: 'red'}}>Price: {item.price}</h5>
+              <h5 style={{ color: '#F22F08'}}>Price: {item.price}</h5>
               <h5>{item.post}</h5>
-              <h5>Seller: {item.username}</h5>
+              <h5 style={{ color: "#0ABDA0" }}>Seller: {item.username}</h5>
               <h2 style={{ color: 'gray'}}>{item.commodity_des}</h2>
               </Card>})
           }

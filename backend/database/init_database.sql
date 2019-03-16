@@ -42,19 +42,21 @@ create table user(
 
 INSERT INTO user ( ) VALUES
 (1, "danker@qq.com", "123456"),
-(2, "saber@qq.com", "123456");
+(2, "saber@qq.com", "123456"),
+(3, "archer@qq.com", "654321");
 
 create table user_profile(
     id int(20) AUTO_INCREMENT,
     user_id int(20),
     level int(2) default -1,
-    neckname varchar(10),
+    neckname varchar(100),
     primary key (id)
 ) engine=InnoDB default charset=utf8;
 
 INSERT INTO user_profile() VALUES
 (1, 1, -1, 'MR.danker'),
-(2, 2, -1, 'MRS.saber');
+(2, 2, -1, 'MRS.saber'),
+(3, 3, 1, 'KingOfLight');
 
 create database s_content;
 use s_content;

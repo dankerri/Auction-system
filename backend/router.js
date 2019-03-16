@@ -266,7 +266,11 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
       }
     )
   }
-  
+})
+
+// update avatar
+router.post('/upload', (req, res)=>{
+  console.log("upload!")
 })
 
 

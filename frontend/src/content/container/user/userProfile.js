@@ -54,7 +54,8 @@ const Dashboard  = ({auth, match}) => {
                         mode="horizontal"
                         style={{ lineHeight: '64px' }}
                     >
-                    <Avatar src={staticAdminUrl+"/"+auth.username+".jpg"} />
+                    {/* set default avator , temperatly */}
+                    <Avatar src={staticAdminUrl+"/default.png"} />
                     <Menu.Item key="1">{auth.username}</Menu.Item>
                     <Menu.Item key="2"><Link to="/">HomePage</Link></Menu.Item>
                     <Menu.Item key="3"><LogoutButton /></Menu.Item>
