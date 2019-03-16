@@ -4,6 +4,7 @@ var squel = require("squel");
 var bodyParser = require("body-parser");
 var jwt = require("jsonwebtoken");
 var checkJwt = require("express-jwt");
+var fileUpload = require('express-fileupload')
 // self
 var db = require("./database/db");
 //=========================================================
@@ -14,6 +15,7 @@ const secret = 'shhh'
 var router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+router.use(fileUpload())
 
 // provide static source 
 router.use(express.static(__dirname+'/public'));
@@ -269,8 +271,19 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
 })
 
 // update avatar
+const publicUrl = './backend/public';
 router.post('/upload', (req, res)=>{
-  console.log("upload!")
+  if (Object.keys(req.files).length == 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  let sampleFile = req.files.wechat;
+  sampleFile.mv(publicUrl+'/user/'+req.body.username +'_wx.jpg', function(err) {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.send('File uploaded!');
+  });
 })
 
 

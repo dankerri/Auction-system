@@ -11,6 +11,7 @@ import { theUrl } from 'selfConfig'
 import { LogoutButton, PreRoute } from '../public_component/index'
 import CommodityList from './components/commodity_list'
 import Profile from './components/profile'
+import postedCommodity from './components/postCommodity'
 
 
 // ===================================================================================================
@@ -27,7 +28,7 @@ const routes = [
     },
     {
         path: '/postedCommodity',
-        component: CommodityList
+        component: postedCommodity
     },
     {
         path: '/wantedCommodity',
@@ -77,7 +78,7 @@ const Dashboard  = ({auth, match}) => {
                     </Menu>
                     </Sider>
 
-                    <Content>
+                    <Content style={{paddingLeft:"20px"}}>
                         {routes.map((route, index) => (
                             <PreRoute 
                                 key={index}

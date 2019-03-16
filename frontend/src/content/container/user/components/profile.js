@@ -4,7 +4,7 @@ import { Form, Input, Button } from 'antd'
 import { Route } from 'react-router-dom'
 
 import { theUrl, tokenHeaders } from 'selfConfig'
-import { UploadAvatar } from '../../public_component/index'
+import { UploadWeChat } from '../../public_component/index'
 
 
 class Profile extends Component {
@@ -20,28 +20,30 @@ class Profile extends Component {
         const auth = this.props.auth
 
         this.props.form.validateFields((err, values)=> {
-            fetch(url, {
-                headers: tokenHeaders(localStorage.getItem('token')),
-                method: 'POST',
-                body: JSON.stringify({
-                    username: payload.username,
-                    neckname: values.neckname,
-                    id: auth.id
+            if (!err) {
+                fetch(url, {
+                    headers: tokenHeaders(localStorage.getItem('token')),
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username: payload.username,
+                        neckname: values.neckname,
+                        id: auth.id
+                    })
                 })
-            })
-            .then(res=> { return res.json() })
-            .then( res => {
-                if(res.edit) {
-                    alert("edit success")
-                    this.props.dispatch({ type: 'GET_PROFILE_SUCCESS', payload: { 
-                        username: res.username,
-                        neckname: res.neckname,
-                        id: res.id
-                    }})
-                } else {
-                    alert("edit failded")
-                }
-            })
+                .then(res=> { return res.json() })
+                .then( res => {
+                    if(res.edit) {
+                        alert("edit success")
+                        this.props.dispatch({ type: 'GET_PROFILE_SUCCESS', payload: { 
+                            username: res.username,
+                            neckname: res.neckname,
+                            id: res.id
+                        }})
+                    } else {
+                        alert("edit failded")
+                    }
+                })
+            }
         })
     }
 
@@ -51,12 +53,14 @@ class Profile extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form
-        const { list } = this.props
+        const { list, auth } = this.props
             if( !list.loading && list.payload ) {
                 return (
-                    <Form layout="" onSubmit={this.handleSubmit}>
+                    <Form layout="" onSubmit={this.handleSubmit} style={{ width: "300px"}}>
                         <Form.Item>
-                            <UploadAvatar />
+                            <UploadWeChat
+                                username={auth.username}
+                            />
                         </Form.Item>
                         
                         <Form.Item label="Username: ">
@@ -64,13 +68,14 @@ class Profile extends Component {
                         </Form.Item>
 
                         <Form.Item label="Neck name: ">
-                        {getFieldDecorator('neckname', {})(
+                        {getFieldDecorator('neckname', {
+                            rules: [{ required: true, message: 'Please input your neckname!' }]
+                        })(
                             <Input placeholder={list.payload.neckname}  />
                         )}
-                        </Form.Item> 
-
+                        </Form.Item>
                         <Form.Item>
-                            <Button 
+                        <Button 
                             type="primary"
                             htmlType="submit"
                             >Update change</Button>

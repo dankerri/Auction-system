@@ -71,7 +71,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch({type: 'HOME_INIT'})
   }
 
@@ -83,7 +83,7 @@ class App extends Component {
   }
 
   render() {
-    const { list } = this.props
+    const list = this.props.list
     if( !list.loading && list.payload ) {
       return(
       <Layout>
