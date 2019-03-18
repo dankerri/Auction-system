@@ -3,7 +3,6 @@ import { theUrl, tokenHeaders } from 'selfConfig'
 import { connect } from 'react-redux'
 import { Table, Popconfirm } from 'antd'
 
-
 class List extends Component {
     constructor(props) {
         super(props)
@@ -47,7 +46,7 @@ class List extends Component {
                 title: 'Action',
                 key: 'action',
                 render: (text, record) => (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => this.delAdmin(record.commodity_id)}>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => this.delAdmin(record.id)}>
                         <a href="javascript:;">Delete</a>
                     </Popconfirm>
                 ),
@@ -56,6 +55,7 @@ class List extends Component {
             payload: []
         }
     }
+
     async componentDidMount() {
         const { url } = this.state
         const payload = await fetch(url, {
@@ -70,8 +70,11 @@ class List extends Component {
         })
     }   
 
-    delAdmin = (key) => {
-        this.props.deleteAdmin(key)
+    async delAdmin(id) {
+        const newPayload = await this.state.payload.filter(element => element.id !== id)
+        this.setState({
+            payload: newPayload
+        })
     }
 
     render() {
@@ -94,23 +97,12 @@ class List extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    deleteAdmin : id => dispatch({
-        type: 'DEL_COMMODITY',
-        id
-    }),
-    init: res => dispatch({
-        type: 'INIT',
-        res
-    })
-})
 
 const mapStateToProps = state => ({
     list: state.list
 })
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
 )(List);
 
 

@@ -31,7 +31,7 @@ class Profile extends Component {
                     method: 'POST',
                     body: JSON.stringify({
                         username: username,
-                        neckname: payload.neckname,
+                        neckname: values.neckname,
                         id: auth.id
                     })
                 })
@@ -39,11 +39,11 @@ class Profile extends Component {
                 .then( res => {
                     if(res.edit) {
                         alert("edit success")
-                        this.props.dispatch({ type: 'GET_PROFILE_SUCCESS', payload: { 
+                        this.setState({payload: { 
                             username: res.username,
                             neckname: res.neckname,
-                            id: res.id
                         }})
+                        console.log(this.state.payload)
                     } else {
                         alert("edit failded")
                     }
