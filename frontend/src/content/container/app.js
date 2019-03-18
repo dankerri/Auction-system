@@ -69,10 +69,19 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.state = {
+      loading: true,
+      payload: []
+    }
   }
 
-  componentDidMount() {
-    this.props.dispatch({type: 'HOME_INIT'})
+  async componentDidMount() {
+    const url = 'http://localhost:5000/commodityList';
+    const payload = await fetch(url).then( res => res.json() )
+    this.setState({
+      loading: false,
+      payload: payload
+    })
   }
 
 
@@ -83,8 +92,8 @@ class App extends Component {
   }
 
   render() {
-    const list = this.props.list
-    if( !list.loading && list.payload ) {
+    const { loading, payload } = this.state
+    if( !loading ) {
       return(
       <Layout>
       <Header className="header">
@@ -117,7 +126,7 @@ class App extends Component {
             </Menu>
           </Sider>
           <Content style={{ padding: '0 24px', minHeight: 280, background: '#ECECEC', }}>
-          {list.payload.map((item, index)=> {
+          {payload.map((item, index)=> {
               return <Card
               key={item.id}
               hoverable
@@ -146,20 +155,7 @@ class App extends Component {
   }
   
 }
-const Com = ({payload}) => {
-  return (
-    payload.map((item)=>{
-      return <h1>{item.commodity_name}</h1>
-    })
-  )
-}
-
-const mapStateToProps = state => ({
-  list: state.list,
-  auth: state.auth
-})
 
 
-export default connect(
-  mapStateToProps,
-)(App);
+
+export default App

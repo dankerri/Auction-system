@@ -7,7 +7,6 @@ import { Table, Popconfirm } from 'antd'
 class List extends Component {
     constructor(props) {
         super(props)
-        this.getList = this.getList.bind(this)
         this.delAdmin = this.delAdmin.bind(this)
 
         this.state = {
@@ -53,44 +52,45 @@ class List extends Component {
                     </Popconfirm>
                 ),
             }],
+            loading: true,
+            payload: []
         }
     }
-    componentDidMount() {
-        this.getList(this.state.url)
-    }   
-
-    getList = (getAdminList) => {
-    
-        fetch(getAdminList, {
+    async componentDidMount() {
+        const { url } = this.state
+        const payload = await fetch(url, {
             headers: tokenHeaders(localStorage.getItem("token")),
             method: 'get',
         })
         .then(res => { return res.json() })
-        .then(res => {
-            this.props.init(res)
-            // Debugging
-            // console.log(res)
+
+        this.setState({
+            loading: false,
+            payload: payload
         })
-        .catch(e=> {
-            console.log(e)   
-        })
-    }
+    }   
 
     delAdmin = (key) => {
         this.props.deleteAdmin(key)
     }
 
     render() {
-        return(
-            <div>
-                
-                <Table 
-                    dataSource={this.props.list}
-                    columns={this.state.columns}
-                    rowKey={record => record.id}
-                />
-            </div>
-        )
+        const { loading, payload, columns } = this.state
+        if (loading) {
+            return <h1>Loading</h1>
+        }
+        else {
+            return(
+                <div>
+                    
+                    <Table 
+                        dataSource={payload}
+                        columns={columns}
+                        rowKey={record => record.id}
+                    />
+                </div>
+            )
+        }
     }
 }
 
