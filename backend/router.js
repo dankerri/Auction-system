@@ -163,6 +163,8 @@ router.get('/commodityList', (req, res)=>{
         .field("post_time")
         .field("commodity_des")
         .field("category")
+        .field("pic_num")
+        .where("status = 1")
         .toString(), 
         (err, row)=> {
           res.send(row)
@@ -232,7 +234,8 @@ router.post('/userProfile', checkJwt({ secret: secret }), (req, res)=>{
         .field("user.id")
         .field("username")
         .field("neckname")
-        .where("username ='"+req.body.username+"' ")
+        .field("phone")
+        .where(`username ='${req.body.username}' `)
         .toString(), 
         (err, row)=> {
           res.send(row)
@@ -249,6 +252,7 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
       squel.update()
       .table("user_profile")
       .set("neckname", req.body.neckname)
+      .set("phone", req.body.phone)
       .where(`user_id = ${req.body.id}`)
       .toString(),
       (err, row) => {

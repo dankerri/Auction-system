@@ -138,6 +138,7 @@ class App extends Component {
               <h5>{item.post}</h5>
               <h5 style={{ color: "#0ABDA0" }}>Seller: {item.username}</h5>
               <h2 style={{ color: 'gray'}}>{item.commodity_des}</h2>
+              <img src={`${theUrl}/user/${this.props.auth.username}_wx.jpg`} />
               </Card>})
           }
           </Content> 
@@ -157,5 +158,10 @@ class App extends Component {
 }
 
 
+const mapStateToProps = state => ({
+  auth: state.auth
+})
 
-export default App
+export default connect(
+  mapStateToProps
+)(App)

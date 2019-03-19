@@ -32,6 +32,7 @@ class Profile extends Component {
                     body: JSON.stringify({
                         username: username,
                         neckname: values.neckname,
+                        phone: values.phone,
                         id: auth.id
                     })
                 })
@@ -42,6 +43,7 @@ class Profile extends Component {
                         this.setState({payload: { 
                             username: res.username,
                             neckname: res.neckname,
+                            phone: res.phone
                         }})
                         console.log(this.state.payload)
                     } else {
@@ -70,7 +72,7 @@ class Profile extends Component {
         })
     }
 
-    render() {
+    render() { 
         const { getFieldDecorator } = this.props.form
         const { username, payload, loading } = this.state
             if( !loading ) {
@@ -81,15 +83,18 @@ class Profile extends Component {
                                 username={username}
                             />
                         </Form.Item>
+                        <Form.Item label="Phone Number: ">
+                        {getFieldDecorator('phone')(
+                            <Input placeholder={payload.phone}  />
+                        )}
+                        </Form.Item>
                         
                         <Form.Item label="Username: ">
                             <label> { payload.username } </label>
                         </Form.Item>
 
                         <Form.Item label="Neck name: ">
-                        {getFieldDecorator('neckname', {
-                            rules: [{ required: true, message: 'Please input your neckname!' }]
-                        })(
+                        {getFieldDecorator('neckname')(
                             <Input placeholder={payload.neckname}  />
                         )}
                         </Form.Item>
