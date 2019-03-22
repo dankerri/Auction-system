@@ -78,7 +78,7 @@ class Profile extends Component {
             if( !loading ) {
                 return (
                     <Form layout="" onSubmit={this.handleSubmit} style={{ width: "300px"}}>
-                        <Form.Item>
+                        <Form.Item label="Wechat">
                             <UploadWeChat
                                 username={username}
                             />
