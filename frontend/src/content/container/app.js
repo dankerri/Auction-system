@@ -131,13 +131,15 @@ class App extends Component {
               key={item.id}
               hoverable
               style={{ width: 240, marginTop: 50 }}
-              cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+              cover={<img alt="example" src={theUrl+"/commodity/default.jpg"} />}
               >
               <h1>{item.commodity_name}</h1>
               <h5 style={{ color: '#F22F08'}}>Price: {item.price}</h5>
               <h5>{item.post}</h5>
               <h5 style={{ color: "#0ABDA0" }}>Seller: {item.username}</h5>
+              <h5>Categorys: {item.category}</h5>
               <h2 style={{ color: 'gray'}}>{item.commodity_des}</h2>
+              <h5>Phone: {item.phone}</h5>
               <img src={`${theUrl}/user/${this.props.auth.username}_wx.jpg`} />
               </Card>})
           }

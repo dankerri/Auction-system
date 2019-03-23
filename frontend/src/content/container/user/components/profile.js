@@ -1,6 +1,6 @@
 import React, { Component } from  'react'
 import { connect } from 'react-redux'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { Route } from 'react-router-dom'
 
 import { theUrl, tokenHeaders } from 'selfConfig'
@@ -39,7 +39,7 @@ class Profile extends Component {
                 .then(res=> { return res.json() })
                 .then( res => {
                     if(res.edit) {
-                        alert("edit success")
+                        message.success("edit success")
                         this.setState({payload: { 
                             username: res.username,
                             neckname: res.neckname,
@@ -47,7 +47,7 @@ class Profile extends Component {
                         }})
                         console.log(this.state.payload)
                     } else {
-                        alert("edit failded")
+                        message.error("edit failded")
                     }
                 })
             }
@@ -84,8 +84,10 @@ class Profile extends Component {
                             />
                         </Form.Item>
                         <Form.Item label="Phone Number: ">
-                        {getFieldDecorator('phone')(
-                            <Input placeholder={payload.phone}  />
+                        {getFieldDecorator('phone',{
+                            initialValue: payload.phone,
+                        })(
+                            <Input />
                         )}
                         </Form.Item>
                         
@@ -94,8 +96,10 @@ class Profile extends Component {
                         </Form.Item>
 
                         <Form.Item label="Neck name: ">
-                        {getFieldDecorator('neckname')(
-                            <Input placeholder={payload.neckname}  />
+                        {getFieldDecorator('neckname', {
+                            initialValue: payload.neckname,
+                        })(
+                            <Input />
                         )}
                         </Form.Item>
                         <Form.Item>

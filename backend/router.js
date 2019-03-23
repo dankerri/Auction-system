@@ -274,9 +274,9 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
   }
 })
 
-// update avatar
+// update wechat qrcode
 const publicUrl = './backend/public';
-router.post('/upload', (req, res)=>{
+router.post('/uploadWechat', (req, res)=>{
   if (Object.keys(req.files).length == 0) {
     return res.status(400).send('No files were uploaded.');
   }
@@ -288,6 +288,29 @@ router.post('/upload', (req, res)=>{
     }
     res.send('File uploaded!');
   });
+})
+
+// ==================================================================================================================================================================
+// upload commodity_list
+router.post('/uploadCommodityPic', (req, res)=>{
+  if (Object.keys(req.files).length == 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+  const pic = req.files.pic
+
+  // I don't know why typeof(pic) always return object
+  // so if only upload a single picture, map function can't be called.
+  // if catch thus error, we tear pic as an object.
+  try {
+    pic.map(item=>{
+      console.log(item.name)
+    })
+  } 
+  catch(e) {
+    console.log(pic.name)
+  }
+
+  res.send(true)
 })
 
 
