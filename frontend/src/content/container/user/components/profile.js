@@ -33,7 +33,7 @@ class Profile extends Component {
                         username: username,
                         neckname: values.neckname,
                         phone: values.phone,
-                        id: auth.id
+                        uid: auth.id
                     })
                 })
                 .then(res=> { return res.json() })

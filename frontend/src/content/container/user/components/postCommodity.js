@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Form, Input, Button, Upload, Icon, Select,  message, } from 'antd'
+import { Form, Input, Button, Upload, Icon, Select, Modal, message, } from 'antd'
 import { Link,Route } from 'react-router-dom'
 import reqwest from 'reqwest'
 
@@ -34,6 +34,7 @@ class  newPost extends Component {
         super(props)
         this.state = {
             loading: true,
+            // location.state is passed by <Link>
             username: this.props.location.state.username,
             payload: []
         }
@@ -62,10 +63,36 @@ class  newPost extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values)=> {
             if(!err) {
-                console.log(values)
+
+              console.log(this.state.payload)
+              console.log(values)
+
+              const {payload} = this.state
+              const url = theUrl + '/createCard'
+              var date = new Date()
+              date = date.getUTCFullYear() + '-' +
+                    ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
+                    ('00' + date.getUTCDate()).slice(-2) + ' ' + 
+                    ('00' + date.getUTCHours()).slice(-2) + ':' + 
+                    ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
+                    ('00' + date.getUTCSeconds()).slice(-2);
+              
+              fetch(url, {
+                headers: tokenHeaders(localStorage.getItem("token")),
+                method: 'POST',
+                body: JSON.stringify({
+                  uid: payload.uid,
+                  commodity: values.commoidty,
+                  price: values.price,
+                  des: values.des,
+                  post_time: date,
+                  category: values.category
+                })
+              })
             }
         })
     }
+
 
     render() {
         const {payload} = this.state
@@ -112,12 +139,17 @@ class  newPost extends Component {
                 </Form.Item>
 
                 <Form.Item label="分类">
-                <Select value="others">
-                    <Option value="book">书籍</Option>
-                    <Option value="elect">电子产品</Option>
-                    <Option value="job">外快</Option>
-                    <Option value="others">others</Option>
-                </Select>
+                {getFieldDecorator('category', {
+                    initialValue: "1",
+                    rules: [{required: true, message: '商品描述不能为空'}]
+                })(
+                  <Select>
+                    <Option value="1">书籍</Option>
+                    <Option value="2">电子产品</Option>
+                    <Option value="3">外快</Option>
+                    <Option value="0">others</Option>
+                  </Select>
+                )}
                 </Form.Item>
 
                 <Form.Item>
