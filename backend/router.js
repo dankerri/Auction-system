@@ -231,7 +231,7 @@ router.post('/userProfile', checkJwt({ secret: secret }), (req, res)=>{
         squel.select()
         .from("user")
         .join("user_profile", null, "user.id = user_profile.user_id")
-        .field("user.id")
+        .field("user.id as uid")
         .field("username")
         .field("neckname")
         .field("phone")
@@ -266,7 +266,7 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
             edit: true,
             username: req.body.username,
             neckname: req.body.neckname,
-            id: req.body.id
+            uid: req.body.uid
           })
         }
       }
@@ -291,6 +291,8 @@ router.post('/uploadWechat', (req, res)=>{
 })
 
 // ==================================================================================================================================================================
+// create new commodity card
+
 // upload commodity_list
 router.post('/uploadCommodityPic', (req, res)=>{
   if (Object.keys(req.files).length == 0) {
@@ -304,13 +306,23 @@ router.post('/uploadCommodityPic', (req, res)=>{
   try {
     pic.map(item=>{
       console.log(item.name)
+      
+      //save pictures
+      /* */
     })
   } 
   catch(e) {
     console.log(pic.name)
   }
 
+  // set pic_num in commodity_detail
+  /* */
+
   res.send(true)
+})
+
+router.post('/createCard', (req, res)=> {
+  console.log(req.body)
 })
 
 

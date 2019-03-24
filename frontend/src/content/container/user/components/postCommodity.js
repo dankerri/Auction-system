@@ -148,6 +148,7 @@ class  newPost extends Component {
                     <Option value="2">电子产品</Option>
                     <Option value="3">外快</Option>
                     <Option value="0">others</Option>
+                    <Option value="11">test</Option>
                   </Select>
                 )}
                 </Form.Item>
