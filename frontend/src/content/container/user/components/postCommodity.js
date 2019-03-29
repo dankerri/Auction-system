@@ -112,7 +112,7 @@ class  newPost extends Component {
                 )}
                 </Form.Item>
                 <Form.Item>
-                    <Demo />
+                  <h1>Upload area</h1>
                 </Form.Item>
                 
                 <Form.Item label="commodity">
@@ -148,7 +148,6 @@ class  newPost extends Component {
                     <Option value="2">电子产品</Option>
                     <Option value="3">外快</Option>
                     <Option value="0">others</Option>
-                    <Option value="11">test</Option>
                   </Select>
                 )}
                 </Form.Item>
@@ -164,114 +163,12 @@ class  newPost extends Component {
     }
 }
 
+// it should be read as an component
 const LivingPostList = () => {
     return (
         <h1>Living Commodity List</h1>
     )
 }
-
-// =================================================================================================
-// test part
-
-class Demo extends React.Component {
-    state = {
-      fileList: [],
-      uploading: false,
-    }
-  
-    handleUpload = () => {
-      const { fileList } = this.state;
-      const formData = new FormData();
-      fileList.forEach((file) => {
-        formData.append('pic', file);
-      });
-  
-      this.setState({
-        uploading: true,
-      });
-  
-      // You can use any AJAX library you like
-      reqwest({
-        url: theUrl+'/uploadCommodityPic',
-        method: 'post',
-        processData: false,
-        data: formData,
-        success: () => {
-          this.setState({
-            uploading: false,
-          });
-          message.success('upload successfully.');
-        },
-        error: () => {
-          this.setState({
-            uploading: false,
-          });
-          message.error('upload failed.');
-        },
-      });
-    }
-  
-    render() {
-      const { uploading, fileList } = this.state;
-      const props = {
-        onRemove: (file) => {
-          this.setState((state) => {
-            const index = state.fileList.indexOf(file);
-            const newFileList = state.fileList.slice();
-            newFileList.splice(index, 1);
-            return {
-              fileList: newFileList,
-            };
-          });
-        },
-        beforeUpload: (file) => {
-          this.setState(state => ({
-            fileList: [...state.fileList, file],
-          }));
-          return false;
-        },
-        fileList,
-      };
-  
-      return (
-        <div>
-          <Upload {...props}>
-            <Button>
-              <Icon type="upload" /> Select File
-            </Button>
-          </Upload>
-          <Button
-            type="primary"
-            onClick={this.handleUpload}
-            disabled={fileList.length === 0}
-            loading={uploading}
-            style={{ marginTop: 16 }}
-          >
-            {uploading ? 'Uploading' : 'Start Upload' }
-          </Button>
-        </div>
-      );
-    }
-  }
-  
-
-
-
-
-
-
-
-
-
-
-
-// ================================================================================================
-
-
-
-
-
-
 
 const mapStateToProps = state => ({
     auth: state.auth

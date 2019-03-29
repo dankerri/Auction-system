@@ -12,6 +12,7 @@ import { LogoutButton, PreRoute } from '../public_component/index'
 import CommodityList from './components/commodity_list'
 import Profile from './components/profile'
 import postedCommodity from './components/postCommodity'
+import Upload from './components/upload'
 
 
 // ===================================================================================================
@@ -24,7 +25,7 @@ const routes = [
     },
     {
         path: '/message',
-        component: CommodityList
+        component: Upload
     },
     {
         path: '/postedCommodity',

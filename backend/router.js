@@ -282,6 +282,7 @@ router.post('/uploadWechat', (req, res)=>{
   }
 
   let sampleFile = req.files.wechat;
+  console.log(sampleFile)
   sampleFile.mv(publicUrl+'/user/'+req.body.username +'_wx.jpg', function(err) {
     if (err) {
       return res.status(500).send(err);
@@ -321,8 +322,16 @@ router.post('/uploadCommodityPic', (req, res)=>{
   res.send(true)
 })
 
-router.post('/createCard', (req, res)=> {
-  console.log(req.body)
+
+router.post('/createCard', (req, res)=>{
+  if (Object.keys(req.files).length == 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  console.log(req.files)
+
+  res.send(true)
+    
 })
 
 
