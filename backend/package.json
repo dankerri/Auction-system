@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "auth-header": "^1.0.0",
+    "base64-img": "^1.0.4",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.4",

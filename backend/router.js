@@ -1,10 +1,17 @@
 // express middleware.
 var express = require("express");
+// generate sql query
 var squel = require("squel");
+// paser post request
 var bodyParser = require("body-parser");
+//generate token
 var jwt = require("jsonwebtoken");
+// check token 
 var checkJwt = require("express-jwt");
+
 var fileUpload = require('express-fileupload')
+var base64Img = require('base64-img')
+
 // self
 var db = require("./database/db");
 //=========================================================
@@ -333,6 +340,19 @@ router.post('/createCard', (req, res)=>{
   res.send(true)
     
 })
+
+router.post('/testing', (req,res)=> {
+  console.log("get")
+  const pic = req.body.cardPic
+  const info = req.body.cardInfo
+
+  base64Img.img(pic[0].thumbUrl, __dirname+'/public', 'qq', (err, filePath) => {
+    if(!err) {
+      console.log(filePath)
+    }
+  })
+  console.log(info)
+}) 
 
 
 
