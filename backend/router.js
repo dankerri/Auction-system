@@ -260,7 +260,7 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
       .table("user_profile")
       .set("neckname", req.body.neckname)
       .set("phone", req.body.phone)
-      .where(`user_id = ${req.body.id}`)
+      .where(`user_id = ${req.body.uid}`)
       .toString(),
       (err, row) => {
         if(err) {
@@ -301,57 +301,71 @@ router.post('/uploadWechat', (req, res)=>{
 // ==================================================================================================================================================================
 // create new commodity card
 
-// upload commodity_list
-router.post('/uploadCommodityPic', (req, res)=>{
-  if (Object.keys(req.files).length == 0) {
-    return res.status(400).send('No files were uploaded.');
-  }
-  const pic = req.files.pic
 
-  // I don't know why typeof(pic) always return object
-  // so if only upload a single picture, map function can't be called.
-  // if catch thus error, we tear pic as an object.
-  try {
-    pic.map(item=>{
-      console.log(item.name)
-      
-      //save pictures
-      /* */
-    })
-  } 
-  catch(e) {
-    console.log(pic.name)
-  }
-
-  // set pic_num in commodity_detail
-  /* */
-
-  res.send(true)
-})
-
-
+// upload component always auto upload
+// But I don't need it, so just response true is enought.
 router.post('/createCard', (req, res)=>{
-  if (Object.keys(req.files).length == 0) {
-    return res.status(400).send('No files were uploaded.');
-  }
-
-  console.log(req.files)
-
   res.send(true)
-    
 })
 
 router.post('/testing', (req,res)=> {
-  console.log("get")
-  const pic = req.body.cardPic
-  const info = req.body.cardInfo
+  // console.log(req.body.uid)
+  // console.log(req.body.cardPic)
+  const cardPic = req.body.cardPic
+  const picNum = cardPic.length
+  let cid = -1
 
-  base64Img.img(pic[0].thumbUrl, __dirname+'/public', 'qq', (err, filePath) => {
-    if(!err) {
-      console.log(filePath)
+  db.contentPool.query(
+    squel.insert()
+    .into("commodity")
+    .set("seller_id",req.body.uid)
+    .set("commodity_name",req.body.commodity)
+    .toString(), (err, rows)=>{
+      if(!err) {
+        db.contentPool.query('select max(commodity_id) as cid from commodity', (err, row)=>{
+          cid = row[0].cid
+          db.contentPool.query(
+            squel.insert()
+            .into("commodity_detail")
+            .set("commodity_id", row[0].cid)
+            .set("price", req.body.price)
+            .set("post_time", req.body.post_time)
+            .set("commodity_des", req.body.des)
+            .set("pic_num", picNum)
+            .set("category", req.body.category)
+            .toString(),
+            (err, row) =>{
+              if(!err) {
+              // save photo
+              cardPic.map((pic, index)=>{
+                base64Img.img(pic.thumbUrl, __dirname+'/public/commodity', `${cid}_${index}`, (err, filePath)=>{
+                  if(!err) {
+                    console.log(filePath)
+                  }
+                })
+              })
+                console.log("insert detail successed")
+                res.send({
+                  post: true
+                })
+              } else {
+                console.log(err)
+              }
+            }
+          )
+        })
+      } else {
+        res.send({
+          post: false
+        })
+        console.log(err)
+      }
     }
-  })
-  console.log(info)
+  )
+
+
+
+
 }) 
 
 

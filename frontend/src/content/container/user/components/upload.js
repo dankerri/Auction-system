@@ -13,6 +13,7 @@ class Picwall extends React.Component {
   constructor(props) {
     super(props)
     this.handleEvent = this.handleEvent.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   
   handleEvent(e)  {
@@ -23,8 +24,30 @@ class Picwall extends React.Component {
     }
     
     const { fileList } = e;
-    console.log("handleEvent: ", fileList);
+    // console.log("handleEvent: ", fileList);
     return fileList;
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.form.validateFields((err, values)=>{
+      if(!err) {
+        // console.log(values)
+        const url = theUrl + '/testing'
+        fetch(url, {
+          headers: {
+            'Accept':'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            cardPic: values.uploadPics,
+            cardInfo: { id: '1'}
+          })
+        })
+      }
+    })
+
   }
 
 
@@ -32,17 +55,19 @@ class Picwall extends React.Component {
     const {getFieldDecorator,} = this.props.form;
     // console.log("this.props.from: ", this.props.form);
     const props = {
-      action: "/upload.do",
+      action: theUrl+"/createCard",
       listType: "picture",
       onChange: this.handleUpload,
     };
     return (
-        <div >
-          {getFieldDecorator('uploadComTest', {
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Item>
+          {getFieldDecorator('uploadPics', {
             valuePropName: 'fileList',
-
-             getValueFromEvent: this.handleEvent,
-
+            getValueFromEvent: this.handleEvent,
+            rules: [{
+              required: true , message:'add picture'
+            }]
           })(
             <Upload name="logo" {...props}>
               <Button type="ghost">
@@ -50,7 +75,17 @@ class Picwall extends React.Component {
               </Button>
             </Upload>
           )}
-        </div>
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+            >
+              submit
+            </Button>
+          </Form.Item>
+        </Form>
     );
   }
 }

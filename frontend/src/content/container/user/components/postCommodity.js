@@ -40,6 +40,7 @@ class  newPost extends Component {
         }
 
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleEvent = this.handleEvent.bind(this)
     }
 
     async componentDidMount() {
@@ -57,6 +58,20 @@ class  newPost extends Component {
             loading: false,
             payload: payload[0]
         })
+
+    }
+
+    // get fileList in upload component
+    handleEvent(e)  {
+        // this.props.form.setFieldsValue({uploadComTest: fileList}); ???
+        
+        if (!e || !e.fileList) {
+          return e;
+        }
+        
+        const { fileList } = e;
+        // console.log("handleEvent: ", fileList);
+        return fileList;
     }
 
     handleSubmit(e) {
@@ -68,7 +83,8 @@ class  newPost extends Component {
               console.log(values)
 
               const {payload} = this.state
-              const url = theUrl + '/createCard'
+              const url = theUrl + '/testing'
+              // generate date in Mysql Datetime format
               var date = new Date()
               date = date.getUTCFullYear() + '-' +
                     ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
@@ -82,11 +98,13 @@ class  newPost extends Component {
                 method: 'POST',
                 body: JSON.stringify({
                   uid: payload.uid,
-                  commodity: values.commoidty,
+                  commodity: values.commodity,
                   price: values.price,
                   des: values.des,
                   post_time: date,
-                  category: values.category
+                  category: values.category,
+                  cardPic: values.uploadPics,
+                  phone: values.phone
                 })
               })
             }
@@ -99,6 +117,14 @@ class  newPost extends Component {
         const { getFieldDecorator } = this.props.form
         const { TextArea } = Input 
         const { Option } = Select 
+
+        // upload configs
+        const props = {
+            action: theUrl+"/createCard",
+            listType: "picture",
+            onChange: this.handleUpload,
+        };
+
         return(
             <Form onSubmit={this.handleSubmit}>
                 {/* personal information */}
@@ -112,7 +138,19 @@ class  newPost extends Component {
                 )}
                 </Form.Item>
                 <Form.Item>
-                  <h1>Upload area</h1>
+                {getFieldDecorator('uploadPics', {
+                    valuePropName: 'fileList',
+                    getValueFromEvent: this.handleEvent,
+                    rules: [{
+                    required: true , message:'add picture'
+                    }]
+                })(
+                    <Upload name="logo" {...props}>
+                    <Button type="ghost">
+                        <Icon type="upload" /> Click to upload
+                    </Button>
+                    </Upload>
+                )}
                 </Form.Item>
                 
                 <Form.Item label="commodity">
