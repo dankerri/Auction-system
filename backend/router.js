@@ -11,7 +11,7 @@ var checkJwt = require("express-jwt");
 
 var fileUpload = require('express-fileupload')
 var base64Img = require('base64-img')
-
+var thumb = require('node-thumbnail').thumb
 // self
 var db = require("./database/db");
 //=========================================================
@@ -21,7 +21,7 @@ const secret = 'shhh'
 
 var router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
-router.use(bodyParser.json());
+router.use(bodyParser.json({limit:"2100000kb"}));
 router.use(fileUpload())
 
 // provide static source 
@@ -162,7 +162,7 @@ router.get('/commodityList', (req, res)=>{
         .from("commodity")
         .join("commodity_detail", null, "commodity.commodity_id = commodity_detail.commodity_id")
         .join("s_user_auth.user", null, "commodity.seller_id = s_user_auth.user.id")
-        .field("commodity.commodity_id as id")
+        .field("commodity.commodity_id as cid")
         .field("commodity_name")
         .field("price")
         .field("seller_id")
@@ -308,12 +308,13 @@ router.post('/createCard', (req, res)=>{
   res.send(true)
 })
 
-router.post('/testing', (req,res)=> {
+router.post('/testing', async (req,res)=> {
   // console.log(req.body.uid)
   // console.log(req.body.cardPic)
   const cardPic = req.body.cardPic
   const picNum = cardPic.length
-  let cid = -1
+  let cid = 99
+  let index = 0
 
   db.contentPool.query(
     squel.insert()
@@ -340,7 +341,13 @@ router.post('/testing', (req,res)=> {
               cardPic.map((pic, index)=>{
                 base64Img.img(pic.thumbUrl, __dirname+'/public/commodity', `${cid}_${index}`, (err, filePath)=>{
                   if(!err) {
-                    console.log(filePath)
+                    thumb({
+                      source: filePath,
+                      destination: __dirname+'/public/commodity/',
+                      width: 400
+                    }, (files, err, stdout, stderr)=> {
+                      console.log("All done")
+                    })
                   }
                 })
               })

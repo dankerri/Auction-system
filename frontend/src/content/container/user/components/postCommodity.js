@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Form, Input, Button, Upload, Icon, Select, Modal, message, } from 'antd'
 import { Link,Route } from 'react-router-dom'
-import reqwest from 'reqwest'
 
 import { theUrl , tokenHeaders } from 'selfConfig'
-import { PreRoute, UploadWeChat } from '../../public_component/index'
 
 // page structor
 const postCommodity = ({match, auth}) => {
@@ -20,7 +18,7 @@ const postCommodity = ({match, auth}) => {
                 }}
             >Create New Post</Link>
             <Route 
-                path={"/user_profile/postedCommodity/newPost"   }
+                path={"/user_profile/postedCommodity/newPost"}
                 component={NewPost}
             />
             <LivingPostList />
@@ -106,6 +104,14 @@ class  newPost extends Component {
                   cardPic: values.uploadPics,
                   phone: values.phone
                 })
+              })
+              .then(res => res.json())
+              .then(res => {
+                  if(res.post) {
+                    this.props.history.replace("/user_profile/postedCommodity")
+                  } else {
+                      message.error("create commodity card failed")
+                  }
               })
             }
         })
@@ -211,7 +217,7 @@ const LivingPostList = () => {
 const mapStateToProps = state => ({
     auth: state.auth
 })
-const PostCommodity =  connect(mapStateToProps )(postCommodity)
+const PostCommodity =  connect(mapStateToProps)(postCommodity)
 const NewPost = Form.create({ name: 'create_new_post' })(newPost)
 
 export default PostCommodity

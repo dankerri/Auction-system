@@ -1,69 +1,19 @@
-import React, { Component } from 'react'
 import { theUrl, tokenHeaders } from 'selfConfig'
+import PostCard from './user/components/postCard'
+
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { 
   Card, Collapse, Comment, Tooltip, List, Button, Avatar, Form, Input, 
-  Layout, Menu, Breadcrumb, Icon
+  Layout, Menu, Breadcrumb, Icon,
+  Carousel
 } from 'antd'
 const TextArea = Input.TextArea
-const {
-  Header, Content, Footer, Sider
-} = Layout
-const { SubMenu } = Menu
-
-// monitor data
-const data = [
-  {
-    actions: [<span>Reply to</span>],
-    author: 'Han Solo',
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    content: (
-      <p>We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.</p>
-    ),
-    datetime: (
-      <Tooltip title={moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss')}>
-        <span>{moment().subtract(1, 'days').fromNow()}</span>
-      </Tooltip>
-    ),
-  },
-  {
-    actions: [<span>Reply to</span>],
-    author: 'Han Solo',
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    content: (
-      <p>We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.</p>
-    ),
-    datetime: (
-      <Tooltip title={moment().subtract(2, 'days').format('YYYY-MM-DD HH:mm:ss')}>
-        <span>{moment().subtract(2, 'days').fromNow()}</span>
-      </Tooltip>
-    ),
-  },
-];
-const Editor = ({
-  onChange, onSubmit, submitting, value,
-}) => (
-  <div>
-    <Form.Item>
-      <TextArea rows={4} onChange={onChange} value={value} />
-    </Form.Item>
-    <Form.Item>
-      <Button
-        htmlType="submit"
-        // loading={submitting}
-        onClick={onSubmit}
-        type="primary"
-      >
-        Add Comment
-      </Button>
-    </Form.Item>
-  </div>)
+const { Header, Content, Footer, Sider } = Layout
 
 
-// import component
-const Panel = Collapse.Panel;
 
 class App extends Component {
   constructor(props) {
@@ -126,23 +76,7 @@ class App extends Component {
             </Menu>
           </Sider>
           <Content style={{ padding: '0 24px', minHeight: 280, background: '#ECECEC', }}>
-          {payload.map((item, index)=> {
-              return <Card
-              key={item.id}
-              hoverable
-              style={{ width: 240, marginTop: 50 }}
-              cover={<img alt="example" src={theUrl+"/commodity/default.jpg"} />}
-              >
-              <h1>{item.commodity_name}</h1>
-              <h5 style={{ color: '#F22F08'}}>Price: {item.price}</h5>
-              <h5>{item.post}</h5>
-              <h5 style={{ color: "#0ABDA0" }}>Seller: {item.username}</h5>
-              <h5>Categorys: {item.category}</h5>
-              <h2 style={{ color: 'gray'}}>{item.commodity_des}</h2>
-              <h5>Phone: {item.phone}</h5>
-              <img src={`${theUrl}/user/${this.props.auth.username}_wx.jpg`} />
-              </Card>})
-          }
+            <PostCard payload={payload} username={this.props.auth.username}/>
           </Content> 
         </Layout>
       </Content>
@@ -158,6 +92,7 @@ class App extends Component {
   }
   
 }
+
 
 
 const mapStateToProps = state => ({
