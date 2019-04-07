@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const url = 'http://localhost:5000/commodityList';
+    const url = theUrl+'/commodityList';
     const payload = await fetch(url).then( res => res.json() )
     this.setState({
       loading: false,

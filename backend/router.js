@@ -28,6 +28,11 @@ router.use(fileUpload())
 router.use(express.static(__dirname+'/public'));
 
 
+router.get('/test', (req, res)=>{
+  res.send("api server visited.")
+})
+
+
 router.post('/adminLogin', (req, res) => {
   // Debugging
   // console.log(req.body.username + ' ' + req.body.password);

@@ -16,12 +16,8 @@ import * as serviceWorker from './serviceWorker'
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
     rootReducer,
-    compose(
-        applyMiddleware(sagaMiddleware),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()    
-      )
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()    
 );
-sagaMiddleware.run(rootSaga)
 
 // init auth situation, if token exists, set auth.logged = true
 const checkAuth = () => {
