@@ -298,13 +298,26 @@ router.post('/uploadWechat', (req, res)=>{
   }
 
   let sampleFile = req.files.wechat;
-  console.log(sampleFile)
-  sampleFile.mv(publicUrl+'/user/'+req.body.username +'_wx.jpg', function(err) {
-    if (err) {
-      return res.status(500).send(err);
+  base64Img.img(sampleFile.data, __dirname+'/public/commodity', `${req.body.username}_wx`, (err, filePath)=>{
+    if(!err) {
+      thumb({
+        source: filePath,
+        destination: __dirname+'/public/commodity/',
+        width: 300
+      }, (files, err, stdout, stderr)=> {
+        console.log("All done")
+      })
     }
-    res.send('File uploaded!');
-  });
+  })
+
+  // let sampleFile = req.files.wechat;
+  // console.log(sampleFile)
+  // sampleFile.mv(publicUrl+'/user/'+req.body.username +'_wx.jpg', function(err) {
+  //   if (err) {
+  //     return res.status(500).send(err);
+  //   }
+  //   res.send('File uploaded!');
+  // });
 })
 
 // ==================================================================================================================================================================
@@ -322,8 +335,6 @@ router.post('/testing', async (req,res)=> {
   // console.log(req.body.cardPic)
   const cardPic = req.body.cardPic
   const picNum = cardPic.length
-  let cid = 99
-  let index = 0
 
   db.contentPool.query(
     squel.insert()

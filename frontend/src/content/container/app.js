@@ -52,48 +52,26 @@ class App extends Component {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['3']}
+          defaultSelectedKeys={['home']}
           style={{ lineHeight: '64px' }}
         >
-          <SubMenu title={<span className="submenu-title-wrapper"><Icon type="setting" />Navigation Three - Submenu</span>}>
-            <MenuItemGroup title="Item 1">
-              <Menu.Item key="setting:1">Option 1</Menu.Item>
-              <Menu.Item key="setting:2">Option 2</Menu.Item>
-            </MenuItemGroup>
-            <MenuItemGroup title="Item 2">
-              <Menu.Item key="setting:3">Option 3</Menu.Item>
-              <Menu.Item key="setting:4">Option 4</Menu.Item>
-            </MenuItemGroup>
+          <SubMenu title={<span className="submenu-title-wrapper"><Icon type="shopping" />Category</span>}>
+              <Menu.Item key="setting:1">书籍</Menu.Item>
+              <Menu.Item key="setting:2">电子产品</Menu.Item>
+              <Menu.Item key="setting:3">外快</Menu.Item>
+              <Menu.Item key="setting:4">others</Menu.Item>
           </SubMenu>
-          <Menu.Item key="2"><Link to="/user_profile">Profile</Link></Menu.Item>
-          <Menu.Item key="3"><Link to="/signup">Signup</Link></Menu.Item>
-          <Menu.Item key="4"><Link to="/">Home</Link></Menu.Item>
+          <Menu.Item key="profile"><Link to="/user_profile">Profile</Link></Menu.Item>
+          <Menu.Item key="signup"><Link to="/signup">Signup</Link></Menu.Item>
+          <Menu.Item key="home"><Link to="/">Home</Link></Menu.Item>
 
         </Menu>
       </Header>
-      <Content style={{ padding: '0 ' }}>
-        <Layout style={{ padding: '24px 0', background: '#fff' }}>
-          <Sider
-          breakpoint="lg"
-          collapsedWidth="0" 
-          width={200} style={{ background: '#fff' }}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
-              style={{ height: '100%' }}
-            >
-                <Menu.Item key="1">书籍</Menu.Item>
-                <Menu.Item key="2">电子产品</Menu.Item>
-                <Menu.Item key="3">外快</Menu.Item>
-                <Menu.Item key="4">others</Menu.Item>
-            </Menu>
-          </Sider> 
-          <Content style={{ padding: '65px 24px', minHeight: 280, background: '#ECECEC', }}>
-            <CardList payload={payload} username={this.props.auth.username}/>
-          </Content> 
-        </Layout>
-      </Content>
+
+      <Content style={{ padding: '65px 24px', minHeight: 280, background: '#ECECEC', }}>
+        <CardList payload={payload} username={this.props.auth.username}/>
+      </Content> 
+
       <Footer style={{ textAlign: 'center' }}>
         Nangua ©2018 Created by Danker
       </Footer>
