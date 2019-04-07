@@ -4,11 +4,10 @@ import CardList from './user/components/cardList'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import moment from 'moment'
+// import moment from 'moment'
 import { 
-  Card, Collapse, Comment, Tooltip, List, Button, Avatar, Form, Input, 
-  Layout, Menu, Breadcrumb, Icon,
-  Carousel
+  Input, 
+  Layout, Menu, Icon
 } from 'antd'
 const TextArea = Input.TextArea
 const { Header, Content, Footer, Sider } = Layout
@@ -21,7 +20,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.state = {
       loading: true,
-      payload: []
+      payload: [],
     }
   }
 
@@ -43,6 +42,8 @@ class App extends Component {
 
   render() {
     const { loading, payload } = this.state
+    const SubMenu = Menu.SubMenu;
+    const MenuItemGroup = Menu.ItemGroup;
     if( !loading ) {
       return(
       <Layout>
@@ -54,9 +55,19 @@ class App extends Component {
           defaultSelectedKeys={['3']}
           style={{ lineHeight: '64px' }}
         >
-          <Menu.Item key="1"><Link to="/user_profile">Profile</Link></Menu.Item>
-          <Menu.Item key="2"><Link to="/signup">Signup</Link></Menu.Item>
-          <Menu.Item key="3"><Link to="/">Home</Link></Menu.Item>
+          <SubMenu title={<span className="submenu-title-wrapper"><Icon type="setting" />Navigation Three - Submenu</span>}>
+            <MenuItemGroup title="Item 1">
+              <Menu.Item key="setting:1">Option 1</Menu.Item>
+              <Menu.Item key="setting:2">Option 2</Menu.Item>
+            </MenuItemGroup>
+            <MenuItemGroup title="Item 2">
+              <Menu.Item key="setting:3">Option 3</Menu.Item>
+              <Menu.Item key="setting:4">Option 4</Menu.Item>
+            </MenuItemGroup>
+          </SubMenu>
+          <Menu.Item key="2"><Link to="/user_profile">Profile</Link></Menu.Item>
+          <Menu.Item key="3"><Link to="/signup">Signup</Link></Menu.Item>
+          <Menu.Item key="4"><Link to="/">Home</Link></Menu.Item>
 
         </Menu>
       </Header>
