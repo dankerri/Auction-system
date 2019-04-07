@@ -69,7 +69,10 @@ const Dashboard  = ({auth, match}) => {
                 </Header>
 
                 <Layout>
-                    <Sider width={200} style={{ background: '#fff' }} >                    
+                    <Sider 
+                    breakpoint="lg"
+                    collapsedWidth="0" 
+                    width={200} style={{ background: '#fff' }} >                    
                     <Menu
                         mode="inline"
                         defaultSelectedKeys={['1']}
@@ -84,7 +87,8 @@ const Dashboard  = ({auth, match}) => {
                     </Menu>
                     </Sider>
 
-                    <Content style={{paddingLeft:"20px"}}>
+                    <Content style={{paddingTop:"120px", paddingLeft:"20px"}}>
+                        
                         {routes.map((route, index) => (
                             <PreRoute 
                                 key={index}

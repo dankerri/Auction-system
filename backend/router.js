@@ -162,6 +162,7 @@ router.get('/commodityList', (req, res)=>{
         .from("commodity")
         .join("commodity_detail", null, "commodity.commodity_id = commodity_detail.commodity_id")
         .join("s_user_auth.user", null, "commodity.seller_id = s_user_auth.user.id")
+        .join("s_user_auth.user_profile", null, "commodity.seller_id = s_user_auth.user_profile.user_id")
         .field("commodity.commodity_id as cid")
         .field("commodity_name")
         .field("price")
@@ -171,7 +172,10 @@ router.get('/commodityList', (req, res)=>{
         .field("commodity_des")
         .field("category")
         .field("pic_num")
+        .field("phone")
+        .field("neckname")
         .where("status = 1")
+        .order("cid", false)
         .toString(), 
         (err, row)=> {
           res.send(row)

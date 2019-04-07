@@ -12,7 +12,7 @@ class List extends Component {
             url: theUrl + '/commodityList',
             columns: [{
                 title: 'Commodity ID',
-                dataIndex: 'id',
+                dataIndex: 'cid',
                 key: 'com_id',
               }, {
                 title: 'Commodity Name',

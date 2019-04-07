@@ -1,5 +1,5 @@
 import { theUrl, tokenHeaders } from 'selfConfig'
-import PostCard from './user/components/postCard'
+import CardList from './user/components/cardList'
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -60,9 +60,12 @@ class App extends Component {
 
         </Menu>
       </Header>
-      <Content style={{ padding: '0 50px' }}>
+      <Content style={{ padding: '0 ' }}>
         <Layout style={{ padding: '24px 0', background: '#fff' }}>
-          <Sider width={200} style={{ background: '#fff' }}>
+          <Sider
+          breakpoint="lg"
+          collapsedWidth="0" 
+          width={200} style={{ background: '#fff' }}>
             <Menu
               mode="inline"
               defaultSelectedKeys={['1']}
@@ -74,9 +77,9 @@ class App extends Component {
                 <Menu.Item key="3">外快</Menu.Item>
                 <Menu.Item key="4">others</Menu.Item>
             </Menu>
-          </Sider>
-          <Content style={{ padding: '0 24px', minHeight: 280, background: '#ECECEC', }}>
-            <PostCard payload={payload} username={this.props.auth.username}/>
+          </Sider> 
+          <Content style={{ padding: '65px 24px', minHeight: 280, background: '#ECECEC', }}>
+            <CardList payload={payload} username={this.props.auth.username}/>
           </Content> 
         </Layout>
       </Content>

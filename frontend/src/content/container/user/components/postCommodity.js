@@ -168,7 +168,11 @@ class  newPost extends Component {
                 </Form.Item>
                 <Form.Item label="price">
                 {getFieldDecorator('price', {
-                    rules: [{required: true, message: '商品价格不能为空'}]
+                    rules:[{
+                        required:true,
+                        pattern: new RegExp(/^[1-9]\d*$/, "g"),
+                        message: '商品价格的格式错误'
+                    }]
                 })(
                     <Input />
                 )}

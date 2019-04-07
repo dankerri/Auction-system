@@ -4,7 +4,8 @@ import {
     Card, Collapse, Comment, Tooltip, List, Button, Avatar, Form, Input, 
     Layout, Menu, Breadcrumb, Icon,
     Carousel,
-    Modal
+    Modal,
+    Row, Col
   } from 'antd'
 import Zmage from 'react-zmage'
 import { throws } from 'assert';
@@ -47,11 +48,13 @@ class PostCard extends Component {
       let { payload, username } = this.props
     
       return(
+        <Row gutter={16 + 32} type="flex" justify="center">{
         payload.map((item)=> {
-            return <Card
+            return <Col  xs={24} xl={6}>
+            <Card
             key={item.cid}
             hoverable
-            style={{ width: 640, marginTop: 50, padding: "20px", }}
+            style={{ width: "100%", marginTop: 50, padding: "20px", }}
             cover={<LoadZamge pic_num={item.pic_num} cid={item.cid}/>}
             >              
               {/* information */}
@@ -60,7 +63,7 @@ class PostCard extends Component {
                 <h1>{item.commodity_name}</h1>
                 <h5 style={{ color: '#F22F08'}}>Price: {item.price}</h5>
                 <h5>{item.post}</h5>
-                <h5 style={{ color: "#0ABDA0" }}>Seller: {item.username}</h5>
+                <h5 style={{ color: "#0ABDA0" }}>Seller: {item.neckname?item.neckname:item.username}</h5>
                 <h5>Categorys: {item.category}</h5>
                 <h2 style={{ color: 'gray'}}>{item.commodity_des}</h2>
                 <h5>Phone: {item.phone}</h5>
@@ -73,10 +76,12 @@ class PostCard extends Component {
                          }}
               >
                <img 
-                src={`${theUrl}/user/${username}_wx.jpg`} />
+                src={`${theUrl}/user/${item.username}_wx.jpg`} />
                
               </div>
-            </Card>})
+            </Card></Col>})
+        }
+        </Row>
       )
     }
     
@@ -117,6 +122,7 @@ class LoadZamge extends Component {
         style={{heigth: "10rem", weight: "100%", overflow: "hidden"}}
         src={theUrl+`/commodity/${this.state.cid}_0_thumb.jpg`}
         set={this.state.set}
+        preset="mobile"
       />
     )
   }
