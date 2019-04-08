@@ -1,14 +1,11 @@
 import React , { Component }from 'react'
 import { theUrl, tokenHeaders } from 'selfConfig'
 import { 
-    Card, Collapse, Comment, Tooltip, List, Button, Avatar, Form, Input, 
-    Layout, Menu, Breadcrumb, Icon,
-    Carousel,
-    Modal,
+    Card, Icon,
     Row, Col
   } from 'antd'
 import Zmage from 'react-zmage'
-import { throws } from 'assert';
+// import { throws } from 'assert';
 
 class PostCard extends Component {
     constructor(props) {
@@ -47,9 +44,23 @@ class PostCard extends Component {
     render() {
       let { payload, category } = this.props
     
-      let filterPayload = payload.filter(item=>{ return item.category === category })
+      // filter commodity, if category = -1, return all commodity
+      let filterPayload
+      if( category === -1) {
+        filterPayload = payload
+      } else { 
+        filterPayload = payload.filter(item=>{ return item.category === category })
+      }
+
+      let cateIcon = [
+        {name: 'Others', icon: <Icon type="bars" /> },
+        {name: '书籍', icon:<Icon type="book" /> },
+        {name: '电子产品', icon:<Icon type="thunderbolt" /> },
+        {name: '外快', icon:<Icon type="pay-circle" /> },
+      ]
+
       return(
-        <Row gutter={16 + 32} type="flex" justify="center">{
+        <Row gutter={16 + 32} type="flex" justify="left">{
           filterPayload.map((item)=> {
             return <Col  xs={24} xl={6}>
             <Card
@@ -65,7 +76,7 @@ class PostCard extends Component {
                 <h5 style={{ color: '#F22F08'}}>Price: {item.price}</h5>
                 <h5>{item.post}</h5>
                 <h5 style={{ color: "#0ABDA0" }}>Seller: {item.neckname?item.neckname:item.username}</h5>
-                <h5>Categorys: {item.category}</h5>
+                <h5>Categorys: {cateIcon[item.category].icon } {cateIcon[item.category].name}</h5>
                 <h2 style={{ color: 'gray'}}>{item.commodity_des}</h2>
                 <h5>Phone: {item.phone}</h5>
               </div>
