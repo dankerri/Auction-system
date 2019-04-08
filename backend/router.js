@@ -9,7 +9,6 @@ var jwt = require("jsonwebtoken");
 // check token 
 var checkJwt = require("express-jwt");
 
-var fileUpload = require('express-fileupload')
 var base64Img = require('base64-img')
 var thumb = require('node-thumbnail').thumb
 // self
@@ -22,7 +21,6 @@ const secret = 'shhh'
 var router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json({limit:"2100000kb"}));
-router.use(fileUpload())
 
 // provide static source 
 router.use(express.static(__dirname+'/public'));
