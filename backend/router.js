@@ -237,6 +237,18 @@ router.post('/signup', (req, res) => {
   )  
 })
 
+
+//======================================================================================
+
+// upload component always auto upload
+// But I don't need it, so just response true is enought.
+router.post('/createCard', (req, res)=>{
+  res.send(true)
+})
+
+
+
+
 //=======================================================================================
 // user profile
 // get user profile
@@ -284,53 +296,33 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
             neckname: req.body.neckname,
             uid: req.body.uid
           })
+
+          const pic = req.body.cardPic[0]
+          base64Img.img(pic.thumbUrl, __dirname+'/public/user', `${req.body.username}_wx`, (err, filePath)=>{
+            if(!err) {
+              thumb({
+                source: filePath,
+                destination: __dirname+'/public/commodity/',
+                width: 400
+              }, (files, err, stdout, stderr)=> {
+                console.log("All done")
+              })
+            }
+          })
+
         }
       }
     )
   }
 })
 
-// update wechat qrcode
-const publicUrl = './backend/public';
-router.post('/uploadWechat', (req, res)=>{
-  if (Object.keys(req.files).length == 0) {
-    return res.status(400).send('No files were uploaded.');
-  }
 
-  let sampleFile = req.files.wechat;
-  base64Img.img(sampleFile.data, __dirname+'/public/commodity', `${req.body.username}_wx`, (err, filePath)=>{
-    if(!err) {
-      thumb({
-        source: filePath,
-        destination: __dirname+'/public/commodity/',
-        width: 300
-      }, (files, err, stdout, stderr)=> {
-        console.log("All done")
-      })
-    }
-  })
-
-  // let sampleFile = req.files.wechat;
-  // console.log(sampleFile)
-  // sampleFile.mv(publicUrl+'/user/'+req.body.username +'_wx.jpg', function(err) {
-  //   if (err) {
-  //     return res.status(500).send(err);
-  //   }
-  //   res.send('File uploaded!');
-  // });
-})
 
 // ==================================================================================================================================================================
 // create new commodity card
 
 
-// upload component always auto upload
-// But I don't need it, so just response true is enought.
-router.post('/createCard', (req, res)=>{
-  res.send(true)
-})
-
-router.post('/testing', async (req,res)=> {
+router.post('/uploadPic', async (req,res)=> {
   // console.log(req.body.uid)
   // console.log(req.body.cardPic)
   const cardPic = req.body.cardPic

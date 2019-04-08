@@ -81,7 +81,7 @@ class  newPost extends Component {
               console.log(values)
 
               const {payload} = this.state
-              const url = theUrl + '/testing'
+              const url = theUrl + '/uploadPic'
               // generate date in Mysql Datetime format
               var date = new Date()
               date = date.getUTCFullYear() + '-' +
@@ -128,7 +128,7 @@ class  newPost extends Component {
         const props = {
             action: theUrl+"/createCard",
             listType: "picture",
-            onChange: this.handleUpload,
+            // onChange: this.handleUpload,
         };
 
         return(

@@ -1,6 +1,6 @@
 import React, { Component } from  'react'
 import { connect } from 'react-redux'
-import { Form, Input, Button, message } from 'antd'
+import { Form, Input, Button, message, Upload, Icon } from 'antd'
 import { Route } from 'react-router-dom'
 
 import { theUrl, tokenHeaders } from 'selfConfig'
@@ -11,6 +11,8 @@ class Profile extends Component {
     constructor(props) {
         super(props)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleEvent = this.handleEvent.bind(this)
+
         this.state = {
             username: this.props.auth.username,
             loading: true,
@@ -19,7 +21,7 @@ class Profile extends Component {
     }
 
     handleSubmit(e) {
-        e.preventDefault();
+        // e.preventDefault();
         const url = theUrl + '/editUserProfile'
         const { payload, username} = this.state
         const { auth } = this.props
@@ -33,7 +35,8 @@ class Profile extends Component {
                         username: username,
                         neckname: values.neckname,
                         phone: values.phone,
-                        uid: auth.id
+                        uid: auth.id,
+                        cardPic: values.uploadPics
                     })
                 })
                 .then(res=> { return res.json() })
@@ -45,7 +48,8 @@ class Profile extends Component {
                             neckname: res.neckname,
                             phone: res.phone
                         }})
-                        console.log(this.state.payload)
+
+                        message.success("edit successed")
                     } else {
                         message.error("edit failded")
                     }
@@ -72,17 +76,50 @@ class Profile extends Component {
         })
     }
 
+        // get fileList in upload component
+        handleEvent(e)  {
+            // this.props.form.setFieldsValue({uploadComTest: fileList}); ???
+            
+            if (!e || !e.fileList) {
+              return e;
+            }
+            
+            const { fileList } = e;
+            // console.log("handleEvent: ", fileList);
+            return fileList;
+        }
+
     render() { 
         const { getFieldDecorator } = this.props.form
         const { username, payload, loading } = this.state
+        // upload configs
+        const props = {
+            action: theUrl+"/createCard",
+            listType: "picture",
+        };
+
             if( !loading ) {
                 return (
+                    <div>
+                    <h5>Wechat</h5>
+                    <img src={theUrl+`/user/${payload.username}_wx.jpg`} />
                     <Form layout="" onSubmit={this.handleSubmit} style={{ width: "300px"}}>
-                        <Form.Item label="Wechat">
-                            <UploadWeChat
-                                username={username}
-                            />
+                        <Form.Item>
+                        {getFieldDecorator('uploadPics', {
+                            valuePropName: 'fileList',
+                            getValueFromEvent: this.handleEvent,
+                            rules: [{
+                            required: true , message:'add picture'
+                            }]
+                        })(
+                            <Upload name="logo" {...props}>
+                            <Button type="ghost">
+                                <Icon type="upload" /> 更换微信
+                            </Button>
+                            </Upload>
+                        )}
                         </Form.Item>
+                        
                         <Form.Item label="Phone Number: ">
                         {getFieldDecorator('phone',{
                             initialValue: payload.phone,
@@ -109,6 +146,7 @@ class Profile extends Component {
                             >Update change</Button>
                         </Form.Item>
                     </Form>
+                    </div>
                 )
             }
             else {
