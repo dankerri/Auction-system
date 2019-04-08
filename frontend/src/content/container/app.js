@@ -47,19 +47,19 @@ class App extends Component {
     const theRoutes = [
       {
         path: '/junk/books',
-        component: ()=>(<CardList payload={payload} username={this.props.auth.username} category={1}/>)
+        component: ()=>(<CardList payload={payload}  category={1}/>)
       },
       {
         path: '/junk/elect',
-        component: ()=>(<CardList payload={payload} username={this.props.auth.username} category={2}/>)
+        component: ()=>(<CardList payload={payload}  category={2}/>)
       },
       {
         path: '/junk/partTime',
-        component: ()=>(<CardList payload={payload} username={this.props.auth.username} category={3}/>)
+        component: ()=>(<CardList payload={payload}  category={3}/>)
       },
       {
         path: '/junk/others',
-        component: ()=>(<CardList payload={payload} username={this.props.auth.username} category={0}/>)
+        component: ()=>(<CardList payload={payload}  category={0}/>)
       }
     ]
 
@@ -91,7 +91,7 @@ class App extends Component {
         <Route 
         path="/junk" 
         exact={true}
-        component={()=>(<CardList payload={payload} username={this.props.auth.username} category={1}/>)}/>
+        component={()=>(<CardList payload={payload}  category={1}/>)}/>
         
         {theRoutes.map((route, index)=>{
           return <Route 

@@ -45,11 +45,12 @@ class PostCard extends Component {
   
   
     render() {
-      let { payload, username } = this.props
+      let { payload, category } = this.props
     
+      let filterPayload = payload.filter(item=>{ return item.category === category })
       return(
         <Row gutter={16 + 32} type="flex" justify="center">{
-        payload.map((item)=> {
+          filterPayload.map((item)=> {
             return <Col  xs={24} xl={6}>
             <Card
             key={item.cid}
