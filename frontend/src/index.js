@@ -9,7 +9,6 @@ import 'antd/dist/antd.css';
 // self
 import RootRouter from './router/index'
 import rootReducer from './content/reducer/index'
-import rootSaga from './content/sagas'
 import * as serviceWorker from './serviceWorker'
 
 

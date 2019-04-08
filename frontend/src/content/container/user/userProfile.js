@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom'
 import {
     Layout, Menu, Avatar
 } from 'antd';
@@ -79,16 +79,16 @@ const Dashboard  = ({auth, match}) => {
                         defaultOpenKeys={['sub1']}
                         style={{ height: '100%', borderRight: 0 }}
                     >
-                        <Menu.Item key="1"><Link to="/user_profile/profile">Profile</Link></Menu.Item>
-                        <Menu.Item key="2"><Link to="/user_profile/message">Message</Link></Menu.Item>
-                        <Menu.Item key="3"><Link to="/user_profile/postedCommodity">Posted Commodity</Link></Menu.Item>
+                        <Menu.Item key="1"><Link to="/user_profile/postedCommodity">Posted Commodity</Link></Menu.Item>
+                        <Menu.Item key="2"><Link to="/user_profile/profile">Profile</Link></Menu.Item>
+                        <Menu.Item key="3"><Link to="/user_profile/message">Message</Link></Menu.Item>
                         {/* <Menu.Item key="4"><Link to="/user_profile/expiredCommodity">Expired Commodity</Link></Menu.Item> */}
                         <Menu.Item key="5"><Link to="/user_profile/wantedCommodity">Wanted Commodity</Link></Menu.Item>
                     </Menu>
                     </Sider>
 
                     <Content style={{paddingTop:"120px", paddingLeft:"20px"}}>
-                        
+                        <Route exact={true} path="/user_profile/" component={postedCommodity} />
                         {routes.map((route, index) => (
                             <PreRoute 
                                 key={index}

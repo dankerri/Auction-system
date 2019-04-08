@@ -19,7 +19,7 @@ export default () => {
         <Router>
             <div>
                 <Switch>
-                <Route exact path="/" component={App} />
+                <Route exact path="/" component={()=>(<h1>homepage</h1>)} />
                 
                 {/* login page and protected page */}
                 <Route path="/root_login" component={RootLogin} />
@@ -29,6 +29,8 @@ export default () => {
                 <PrivateRoute path="/root_dashboard" component={RootDashboard} level={0} loginPage={"root_login"} />
                 <PrivateRoute path="/admin_dashboard" component={AdminDashboard} level={1} loginPage={"admin_login"} />
                 <PrivateRoute path="/user_profile" component={UserProfile} level={-1} loginPage={"user_login"}/>
+
+                <Route path="/junk" component={App} />
 
 
                 <Route path="/signup" component={Signup}/>
