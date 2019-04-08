@@ -48,8 +48,6 @@ class Profile extends Component {
                             neckname: res.neckname,
                             phone: res.phone
                         }})
-
-                        message.success("edit successed")
                     } else {
                         message.error("edit failded")
                     }
@@ -96,6 +94,17 @@ class Profile extends Component {
         const props = {
             action: theUrl+"/createCard",
             listType: "picture",
+            beforeUpload:　(file)　=> {
+                const isJPG = file.type === 'image/jpeg';
+                if (!isJPG) {
+                  message.error('You can only upload JPG file!');
+                }
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isLt2M) {
+                  message.error('Image must smaller than 2MB!');
+                }
+                return isJPG && isLt2M;
+            }
         };
 
             if( !loading ) {
@@ -110,9 +119,9 @@ class Profile extends Component {
                         {getFieldDecorator('uploadPics', {
                             valuePropName: 'fileList',
                             getValueFromEvent: this.handleEvent,
-                            rules: [{
-                            required: true , message:'add picture'
-                            }]
+                            // rules: [{
+                            // required: true , message:'add picture'
+                            // }]
                         })(
                             <Upload name="logo" {...props}>
                             <Button type="ghost">

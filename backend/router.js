@@ -295,19 +295,20 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
             uid: req.body.uid
           })
 
-          const pic = req.body.cardPic[0]
-          base64Img.img(pic.thumbUrl, __dirname+'/public/user', `${req.body.username}_wx`, (err, filePath)=>{
-            if(!err) {
-              thumb({
-                source: filePath,
-                destination: __dirname+'/public/commodity/',
-                width: 400
-              }, (files, err, stdout, stderr)=> {
-                console.log("All done")
-              })
-            }
-          })
-
+          if( req.body.cardPic){
+            const pic = req.body.cardPic[0]
+            base64Img.img(pic.thumbUrl, __dirname+'/public/user', `${req.body.username}_wx`, (err, filePath)=>{
+              if(!err) {
+                thumb({
+                  source: filePath,
+                  destination: __dirname+'/public/commodity/',
+                  width: 400
+                }, (files, err, stdout, stderr)=> {
+                  console.log("All done")
+                })
+              }
+            })
+          }
         }
       }
     )
