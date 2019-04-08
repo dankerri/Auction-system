@@ -354,7 +354,7 @@ router.post('/uploadPic', async (req,res)=> {
                     thumb({
                       source: filePath,
                       destination: __dirname+'/public/commodity/',
-                      width: 400
+                      width: 10
                     }, (files, err, stdout, stderr)=> {
                       console.log("All done")
                     })

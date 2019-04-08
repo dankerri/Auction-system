@@ -102,7 +102,9 @@ class Profile extends Component {
                 return (
                     <div>
                     <h5>Wechat</h5>
-                    <img src={theUrl+`/user/${payload.username}_wx.jpg`} />
+                    <img 
+                    style={{ height: "400px"}}
+                    src={theUrl+`/user/${payload.username}_wx.jpg`} />
                     <Form layout="" onSubmit={this.handleSubmit} style={{ width: "300px"}}>
                         <Form.Item>
                         {getFieldDecorator('uploadPics', {

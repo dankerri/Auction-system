@@ -76,6 +76,7 @@ class PostCard extends Component {
                          }}
               >
                <img 
+                style={{ height: "400px"}}
                 src={`${theUrl}/user/${item.username}_wx.jpg`} />
                
               </div>
