@@ -302,7 +302,7 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
                 thumb({
                   source: filePath,
                   destination: __dirname+'/public/commodity/',
-                  width: 400
+                  width: 200
                 }, (files, err, stdout, stderr)=> {
                   console.log("All done")
                 })

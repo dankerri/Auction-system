@@ -88,7 +88,7 @@ class PostCard extends Component {
                          }}
               >
                <img 
-                style={{ height: "30rem"}}
+                style={{ height: "20rem"}}
                 src={`${theUrl}/user/${item.username}_wx.jpg`} />
                
               </div>
@@ -135,7 +135,7 @@ class LoadZamge extends Component {
         style={{heigth: "10rem", weight: "100%", overflow: "hidden"}}
         src={theUrl+`/commodity/${this.state.cid}_0_thumb.jpg`}
         set={this.state.set}
-        // preset="mobile"
+        preset="mobile"
       />
     )
   }
