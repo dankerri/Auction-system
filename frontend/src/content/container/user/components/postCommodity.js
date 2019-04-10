@@ -4,6 +4,7 @@ import { Form, Input, Button, Upload, Icon, Select, Modal, message, } from 'antd
 import { Link,Route } from 'react-router-dom'
 
 import { theUrl , tokenHeaders } from 'selfConfig'
+import CardList from './cardList'
 
 // page structor
 const postCommodity = ({match, auth}) => {
