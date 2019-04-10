@@ -64,7 +64,8 @@ const Dashboard  = ({auth, match}) => {
                     <Avatar src={staticAdminUrl+"/default.png"} />
                     <Menu.Item key="1">{auth.username}</Menu.Item>
                     <Menu.Item key="2"><Link to="/">HomePage</Link></Menu.Item>
-                    <Menu.Item key="3"><LogoutButton /></Menu.Item>
+                    <Menu.Item key="3"><Link to="/junk">Junk</Link></Menu.Item>
+                    <Menu.Item key="4"><LogoutButton /></Menu.Item>
                     </Menu>
                 </Header>
 

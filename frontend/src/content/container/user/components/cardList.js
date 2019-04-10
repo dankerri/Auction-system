@@ -1,3 +1,5 @@
+// display data and pictures as cards.
+// Accept payload and category
 import React , { Component }from 'react'
 import { theUrl, tokenHeaders } from 'selfConfig'
 import { 
@@ -12,9 +14,6 @@ class PostCard extends Component {
       super(props)
     }
 
-
-  
-  
     render() {
       let { payload, category } = this.props
     

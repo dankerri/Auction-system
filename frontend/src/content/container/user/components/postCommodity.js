@@ -4,8 +4,7 @@ import { Form, Input, Button, Upload, Icon, Select, Modal, message, } from 'antd
 import { Link,Route } from 'react-router-dom'
 
 import { theUrl , tokenHeaders } from 'selfConfig'
-import CardList from './cardList'
-
+import LivingPostList from './livingPostList'
 // page structor
 const postCommodity = ({match, auth}) => {
     return(
@@ -224,11 +223,6 @@ class  newPost extends Component {
 }
 
 // it should be read as an component
-const LivingPostList = () => {
-    return (
-        <h1>Living Commodity List</h1>
-    )
-}
 
 const mapStateToProps = state => ({
     auth: state.auth

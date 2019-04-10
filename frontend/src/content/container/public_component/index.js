@@ -18,7 +18,9 @@ const logoutButton = props => {
         })
     }
     return(
-        <Button type="danger" onClick={logout}>logout</Button>
+        <Button type="danger" onClick={logout}>
+        Logout
+        </Button>
     )
 }
 const LogoutButton =  connect()(logoutButton)

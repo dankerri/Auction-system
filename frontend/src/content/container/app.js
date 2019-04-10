@@ -1,5 +1,7 @@
 import { theUrl, tokenHeaders } from 'selfConfig'
 import CardList from './user/components/cardList'
+import { LogoutButton } from './public_component/index'
+
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -83,6 +85,7 @@ class App extends Component {
           <Menu.Item key="profile"><Link to="/user_profile">Profile</Link></Menu.Item>
           <Menu.Item key="signup"><Link to="/signup">Signup</Link></Menu.Item>
           <Menu.Item key="home"><Link to="/">Home</Link></Menu.Item>
+          <Menu.Item key="logout"><LogoutButton /></Menu.Item>
 
         </Menu>
       </Header>
