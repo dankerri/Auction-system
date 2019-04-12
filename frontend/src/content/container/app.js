@@ -76,6 +76,7 @@ class App extends Component {
           defaultSelectedKeys={['0']}
           style={{ lineHeight: '64px' }}
         >
+          <Menu.Item key="home"><Link to="/">Home</Link></Menu.Item>
           <SubMenu title={<span className="submenu-title-wrapper"><Icon type="shopping" /><Link to="/junk">Junk</Link></span>}>
               <Menu.Item key="setting:1"><Link to="/junk/books">书籍</Link></Menu.Item>
               <Menu.Item key="setting:2"><Link to="/junk/elect">电子产品</Link></Menu.Item>
@@ -84,7 +85,6 @@ class App extends Component {
           </SubMenu>
           <Menu.Item key="profile"><Link to="/user_profile">Profile</Link></Menu.Item>
           <Menu.Item key="signup"><Link to="/signup">Signup</Link></Menu.Item>
-          <Menu.Item key="home"><Link to="/">Home</Link></Menu.Item>
           <Menu.Item key="logout"><LogoutButton /></Menu.Item>
 
         </Menu>

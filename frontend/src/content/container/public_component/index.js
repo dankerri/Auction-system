@@ -1,29 +1,51 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Route } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import { Button, Upload, Icon, message } from 'antd'
 
 import { theUrl } from 'selfConfig'
 // ==========================================================================================================
 // authorization situation
-// use this button to log out.
-const logoutButton = props => {
-    const logout = () => {
+// use this button to log out and direct to login page
+class TheLogoutButton extends Component{
+    constructor(props) {
+        super(props)
+        this.logout = this.logout.bind(this)
+    }
+    
+    logout (){
         localStorage.removeItem('token')
         localStorage.removeItem('level')
         localStorage.removeItem('username')
         localStorage.removeItem('id')
-        props.dispatch({
+        this.props.dispatch({
             type: 'LOGOUT'
         })
     }
-    return(
-        <Button type="danger" onClick={logout}>
-        Logout
-        </Button>
-    )
+
+    render() {
+        if( this.props.auth.logged ) {
+            return(
+                <Button type="danger" onClick={this.logout}>
+                Logout
+                </Button>
+            )
+        } else {
+            return(
+                <Button type="danger">
+                    <Link to="/user_login">Login</Link>
+                </Button>
+            )
+        }
+    }
 }
-const LogoutButton =  connect()(logoutButton)
+
+const mapAuthToButton = state => ({
+    auth: state.auth
+})
+const LogoutButton =  connect(
+    mapAuthToButton
+)(TheLogoutButton)
 
 
 // HOC, get url string from route

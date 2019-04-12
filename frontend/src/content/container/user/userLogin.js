@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { theUrl } from 'selfConfig'
 
 const mapStateToProps = state => ({
@@ -57,6 +58,7 @@ const Login = (props) => {
 
     return (
         <form onSubmit={login} >
+            <Link to="/junk">Back to Junk.</Link>
             <h1>User Login</h1>
             <label>
                 <input 

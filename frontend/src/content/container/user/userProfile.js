@@ -12,7 +12,6 @@ import { LogoutButton, PreRoute } from '../public_component/index'
 import CommodityList from './components/commodity_list'
 import Profile from './components/profile'
 import postedCommodity from './components/postCommodity'
-import Upload from './components/upload'
 
 
 // ===================================================================================================
@@ -25,7 +24,7 @@ const routes = [
     },
     {
         path: '/message',
-        component: Upload
+        component: Profile
     },
     {
         path: '/postedCommodity',
@@ -61,9 +60,9 @@ const Dashboard  = ({auth, match}) => {
                         style={{ lineHeight: '64px' }}
                     >
                     {/* set default avator , temperatly */}
+                    <Menu.Item key="2"><Link to="/">HomePage</Link></Menu.Item>
                     <Avatar src={staticAdminUrl+"/default.png"} />
                     <Menu.Item key="1">{auth.username}</Menu.Item>
-                    <Menu.Item key="2"><Link to="/">HomePage</Link></Menu.Item>
                     <Menu.Item key="3"><Link to="/junk">Junk</Link></Menu.Item>
                     <Menu.Item key="4"><LogoutButton /></Menu.Item>
                     </Menu>
