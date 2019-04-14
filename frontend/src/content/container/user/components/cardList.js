@@ -18,9 +18,9 @@ class PostCard extends Component {
     render() {
       let { payload, category } = this.props
     
-      // filter commodity, if category = -1, return all commodity
+      // filter commodity, in default return all commodity
       let filterPayload
-      if( category === -1) {
+      if( !category ) {
         filterPayload = payload
       } else { 
         filterPayload = payload.filter(item=>{ return item.category === category })

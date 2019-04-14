@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { theUrl } from 'selfConfig'
 
 
-import CardList from './cardList'
+import ManageCardList from './manageCardList'
 
 class LivingPostList extends Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class LivingPostList extends Component {
         return(
             <div>
                 <h1>Living Post List</h1>
-                <CardList payload={payload}  category={-1}/>
+                <ManageCardList payload={payload}  category={-1}/>
             </div>
         )
     }

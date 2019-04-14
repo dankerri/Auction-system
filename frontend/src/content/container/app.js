@@ -95,7 +95,7 @@ class App extends Component {
         path="/junk" 
         exact={true}
         // if category = 1, show all commodity
-        component={()=>(<CardList payload={payload}  category={-1}/>)}/>
+        component={()=>(<CardList payload={payload}  />)}/>
         
         {theRoutes.map((route, index)=>{
           return <Route 
