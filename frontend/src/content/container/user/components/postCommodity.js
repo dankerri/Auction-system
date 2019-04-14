@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Form, Input, Button, Upload, Icon, Select, Modal, message, } from 'antd'
 import { Link,Route } from 'react-router-dom'
 
-import { theUrl , tokenHeaders } from 'selfConfig'
+import { theUrl , tokenHeaders, dateToDateTime  } from 'selfConfig'
 import LivingPostList from './livingPostList'
 // page structor
 const postCommodity = ({match, auth}) => {
@@ -82,14 +82,7 @@ class  newPost extends Component {
 
               const {payload} = this.state
               const url = theUrl + '/uploadPic'
-              // generate date in Mysql Datetime format
-              var date = new Date()
-              date = date.getUTCFullYear() + '-' +
-                    ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
-                    ('00' + date.getUTCDate()).slice(-2) + ' ' + 
-                    ('00' + date.getUTCHours()).slice(-2) + ':' + 
-                    ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
-                    ('00' + date.getUTCSeconds()).slice(-2);
+              const date = dateToDateTime()
               
               fetch(url, {
                 headers: tokenHeaders(localStorage.getItem("token")),
@@ -170,14 +163,14 @@ class  newPost extends Component {
                 )}
                 </Form.Item>
                 
-                <Form.Item label="commodity">
+                <Form.Item label="Commodity">
                 {getFieldDecorator('commodity', {
                     rules: [{required: true, message: '商品名不能为空'}]
                 })(
                     <Input />
                 )}
                 </Form.Item>
-                <Form.Item label="price">
+                <Form.Item label="Price ￥">
                 {getFieldDecorator('price', {
                     rules:[{
                         required:true,
@@ -189,7 +182,7 @@ class  newPost extends Component {
                 )}
                 </Form.Item>
 
-                <Form.Item label="description">
+                <Form.Item label="Description">
                 {getFieldDecorator('des', {
                     rules: [{required: true, message: '商品描述不能为空'}]
                 })(

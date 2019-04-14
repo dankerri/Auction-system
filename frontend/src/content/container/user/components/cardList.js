@@ -1,7 +1,7 @@
 // display data and pictures as cards.
 // Accept payload and category
 import React , { Component }from 'react'
-import { theUrl, tokenHeaders } from 'selfConfig'
+import { theUrl, tokenHeaders, dateTimeToDate } from 'selfConfig'
 import { 
     Card, Icon,
     Row, Col
@@ -13,6 +13,7 @@ class PostCard extends Component {
     constructor(props) {
       super(props)
     }
+
 
     render() {
       let { payload, category } = this.props
@@ -41,10 +42,10 @@ class PostCard extends Component {
             hoverable
             style={{ width: "100%", marginTop: 50, padding: "20px", }}
             cover={<LoadZamge pic_num={item.pic_num} cid={item.cid}/>}
-            >              
+            > 
               {/* information */}
               <div>
-                <h5>post time: {item.post_time}</h5>
+                <h5>{dateTimeToDate(item.post_time)}</h5>
                 <h1>{item.commodity_name}</h1>
                 <h5 style={{ color: '#F22F08'}}>Price: {item.price}</h5>
                 <h5>{item.post}</h5>
@@ -65,6 +66,8 @@ class PostCard extends Component {
                 src={`${theUrl}/user/${item.username}_wx.jpg`} />
                
               </div>
+
+              <h5>cid: {item.cid}</h5>
             </Card></Col>})
         }
         </Row>
