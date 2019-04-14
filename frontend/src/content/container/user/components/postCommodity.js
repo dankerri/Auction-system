@@ -9,24 +9,30 @@ import LivingPostList from './livingPostList'
 const postCommodity = ({match, auth}) => {
     return(
         <div>
-            <Link 
-                to={{
-                    pathname: "/user_profile/postedCommodity/newPost",
-                    state: {
-                        username: auth.username
-                    }
-                }}
-            >Create New Post</Link>
+            {/* post commodity area */}
+            <Button type="primary">
+                <Link 
+                    to={{
+                        pathname: "/user_profile/postedCommodity/newPost",
+                        state: {
+                            username: auth.username
+                        }
+                    }}
+                >Create New Post</Link>
+            </Button>
             <Route 
                 path={"/user_profile/postedCommodity/newPost"}
                 component={NewPost}
             />
-            <LivingPostList />
+
+            {/* Show and manage commodity cards area */}
+            <LivingPostList username={auth.username}/>
         </div>
     )
 }
 
 
+// An form that can post commodity card
 class  newPost extends Component {
     constructor(props) {
         super(props)

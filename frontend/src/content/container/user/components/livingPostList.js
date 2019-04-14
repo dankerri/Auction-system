@@ -11,7 +11,7 @@ class LivingPostList extends Component {
         this.state = {
             loading: true,
             payload: [],
-            username: this.props.auth.username 
+            username: this.props.username 
         }
     }
 
