@@ -11,7 +11,7 @@ import { theUrl } from 'selfConfig'
 import { LogoutButton, PreRoute } from '../public_component/index'
 import CommodityList from './components/commodity_list'
 import Profile from './components/profile'
-import postedCommodity from './components/postCommodity'
+import postCommodity from './components/postCommodity'
 
 
 // ===================================================================================================
@@ -23,17 +23,17 @@ const routes = [
         component: Profile
     },
     {
+        path: '/postCommodity',
+        component: postCommodity
+    },
+    {
+        path: '/historyCommodity',
+        component: postCommodity
+    },
+    {
         path: '/message',
         component: Profile
     },
-    {
-        path: '/postedCommodity',
-        component: postedCommodity
-    },
-    // {
-    //     path: '/expiredCommodity',
-    //     component: CommodityList
-    // },
     {
         path: '/wantedCommodity',
         component: CommodityList
@@ -79,16 +79,17 @@ const Dashboard  = ({auth, match}) => {
                         defaultOpenKeys={['sub1']}
                         style={{ height: '100%', borderRight: 0 }}
                     >
-                        <Menu.Item key="1"><Link to="/user_profile/postedCommodity">Posted Commodity</Link></Menu.Item>
-                        <Menu.Item key="2"><Link to="/user_profile/profile">Profile</Link></Menu.Item>
-                        <Menu.Item key="3"><Link to="/user_profile/message">Message</Link></Menu.Item>
+                        <Menu.Item key="1"><Link to="/user_profile/postCommodity">Post Commodity</Link></Menu.Item>
+                        <Menu.Item key="2"><Link to="/user_profile/historyCommodity">History Commodity</Link></Menu.Item>
+                        <Menu.Item key="3"><Link to="/user_profile/profile">Profile</Link></Menu.Item>
+                        <Menu.Item key="4"><Link to="/user_profile/message">Message</Link></Menu.Item>
                         {/* <Menu.Item key="4"><Link to="/user_profile/expiredCommodity">Expired Commodity</Link></Menu.Item> */}
                         <Menu.Item key="5"><Link to="/user_profile/wantedCommodity">Wanted Commodity</Link></Menu.Item>
                     </Menu>
                     </Sider>
 
                     <Content style={{paddingTop:"120px", paddingLeft:"20px"}}>
-                        <Route exact={true} path="/user_profile/" component={postedCommodity} />
+                        <Route exact={true} path="/user_profile/" component={postCommodity} />
                         {routes.map((route, index) => (
                             <PreRoute 
                                 key={index}

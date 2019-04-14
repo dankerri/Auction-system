@@ -3,7 +3,7 @@ import { theUrl, dateTimeToDate } from 'selfConfig'
 import { Card, Icon } from 'antd'
 import Zmage from 'react-zmage'
 
-const StyleCard = ({item}) => {
+const ShowCard = ({item}) => {
     let cateIcon = [
         {name: 'Others', icon: <Icon type="bars" /> },
         {name: '书籍', icon:<Icon type="book" /> },
@@ -22,7 +22,7 @@ const StyleCard = ({item}) => {
           <div>
             <h5>{dateTimeToDate(item.post_time)}</h5>
             <h1>{item.commodity_name}</h1>
-            <h5 style={{ color: '#F22F08'}}>Price: {item.price}</h5>
+            <h5 style={{ color: '#F22F08'}}>Price: {item.price} ￥</h5>
             <h5>{item.post}</h5>
             <h5 style={{ color: "#0ABDA0" }}>Seller: {item.neckname?item.neckname:item.username}</h5>
             <h5>Categorys: {cateIcon[item.category].icon } {cateIcon[item.category].name}</h5>
@@ -89,4 +89,4 @@ class LoadZamge extends Component {
     }
   }
 
-export default StyleCard;
+export default ShowCard;

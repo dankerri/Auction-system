@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import { theUrl } from 'selfConfig'
 
 
-import ManageCardList from './manageCardList'
+import EditCard from './editCard'
 import CardList from './cardList'
-import ShowCard from './showCard'
 
-class LivingPostList extends Component {
+class UserPostList extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -31,7 +30,7 @@ class LivingPostList extends Component {
         return(
             <div>
                 <h1>Living Post List</h1>
-                <CardList payload={payload} component={ShowCard} />
+                <CardList payload={payload} component={EditCard} />
             </div>
         )
     }
@@ -40,4 +39,4 @@ class LivingPostList extends Component {
 const mapStateToProps = state => ({
     auth: state.auth
 })
-export default connect(mapStateToProps)(LivingPostList)
+export default connect(mapStateToProps)(UserPostList)

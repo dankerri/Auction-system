@@ -318,10 +318,9 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
 
 
 // ==================================================================================================================================================================
+
 // create new commodity card
-
-
-router.post('/uploadPic', async (req,res)=> {
+router.post('/uploadPic', (req,res)=> {
   // console.log(req.body.uid)
   // console.log(req.body.cardPic)
   const cardPic = req.body.cardPic
@@ -386,7 +385,25 @@ router.post('/uploadPic', async (req,res)=> {
 
 }) 
 
+// delete commodity card
+router.post('/deleteCommodity', (req, res)=>{
+  console.log(req.body.cid);
 
-
+  db.contentPool.query(
+    squel.update()
+    .table("commodity")
+    .set("status", -1)
+    .where(`commodity_id = ${req.body.cid}`)
+    .toString(),
+    (err, rows)=>{
+      if(!err) {
+        res.send({ edit : true})
+      } else {
+        res.send({ edit: false})
+        console.log(err)
+      }
+    }
+  )
+})
 
 module.exports = router;
