@@ -1,14 +1,17 @@
-// display data and pictures as cards.
-// Accept payload and category
+// Accept payload and filter category
+// Accept styled card component to show data
+
+
 import React , { Component }from 'react'
-// import {  tokenHeaders, dateTimeToDate } from 'selfConfig'
 import { 
     Icon,
     Row, Col
   } from 'antd'
-import StyleCard from './styleCard'
-// import Zmage from 'react-zmage'
-// import { throws } from 'assert';
+import StyleCard from './showCard'
+
+
+
+
 
 class PostCard extends Component {
     constructor(props) {
@@ -17,8 +20,9 @@ class PostCard extends Component {
 
 
     render() {
-      let { payload, category } = this.props
-    
+      //if you need
+      let { payload, category, component: StyleCard } = this.props
+
       // filter commodity, in default return all commodity
       let filterPayload
       if( !category ) {
@@ -32,6 +36,7 @@ class PostCard extends Component {
           filterPayload.map((item)=> {
             return <Col  xs={24} xl={6}>
 
+              {/* <StyleCard item={item} /> */}
               <StyleCard item={item} />
             
             </Col>})

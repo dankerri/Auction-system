@@ -4,6 +4,8 @@ import { theUrl } from 'selfConfig'
 
 
 import ManageCardList from './manageCardList'
+import CardList from './cardList'
+import ShowCard from './showCard'
 
 class LivingPostList extends Component {
     constructor(props) {
@@ -29,7 +31,7 @@ class LivingPostList extends Component {
         return(
             <div>
                 <h1>Living Post List</h1>
-                <ManageCardList payload={payload}  category={-1}/>
+                <CardList payload={payload} component={ShowCard} />
             </div>
         )
     }

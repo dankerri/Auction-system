@@ -4,7 +4,10 @@ import { Form, Input, Button, Upload, Icon, Select, Modal, message, } from 'antd
 import { Link,Route } from 'react-router-dom'
 
 import { theUrl , tokenHeaders, dateToDateTime  } from 'selfConfig'
-import LivingPostList from './livingPostList'
+import UserPostList from './userPostList'
+
+
+
 // page structor
 const postCommodity = ({match, auth}) => {
     return(
@@ -26,7 +29,7 @@ const postCommodity = ({match, auth}) => {
             />
 
             {/* Show and manage commodity cards area */}
-            <LivingPostList username={auth.username}/>
+            <UserPostList username={auth.username}/>
         </div>
     )
 }

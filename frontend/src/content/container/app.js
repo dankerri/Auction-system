@@ -1,5 +1,6 @@
 import { theUrl, tokenHeaders } from 'selfConfig'
 import CardList from './user/components/cardList'
+import ShowCard from './user/components/showCard'
 import { LogoutButton } from './public_component/index'
 
 
@@ -13,6 +14,15 @@ import {
 } from 'antd'
 const TextArea = Input.TextArea
 const { Header, Content, Footer, Sider } = Layout
+
+
+
+
+
+
+
+
+
 
 class App extends Component {
   constructor(props) {
@@ -95,7 +105,7 @@ class App extends Component {
         path="/junk" 
         exact={true}
         // if category = 1, show all commodity
-        component={()=>(<CardList payload={payload}  />)}/>
+        component={()=>(<CardList payload={payload} component={ShowCard} />)}/>
         
         {theRoutes.map((route, index)=>{
           return <Route 
