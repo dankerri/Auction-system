@@ -12,6 +12,7 @@ import { LogoutButton, PreRoute } from '../public_component/index'
 import CommodityList from './components/commodity_list'
 import Profile from './components/profile'
 import postCommodity from './components/postCommodity'
+import HistoryCommodity from './components/historyCommodity'
 
 
 // ===================================================================================================
@@ -28,7 +29,7 @@ const routes = [
     },
     {
         path: '/historyCommodity',
-        component: postCommodity
+        component: HistoryCommodity
     },
     {
         path: '/message',
