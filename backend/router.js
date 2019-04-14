@@ -188,7 +188,7 @@ router.get('/commodityList', (req, res)=>{
 router.post('/commodityList', (req, res)=>{
 
   let username = req.body.username
-  let status = req.body.status
+  let status = req.body.status || 1
   
 
   console.log(username+status)
