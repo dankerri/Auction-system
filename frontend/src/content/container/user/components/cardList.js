@@ -1,4 +1,5 @@
-// Accept payload and filter category
+// Accept payload
+// Accept category to filter category
 // Accept styled card component to show data
 
 
@@ -7,7 +8,7 @@ import {
     Icon,
     Row, Col
   } from 'antd'
-import StyleCard from './showCard'
+
 
 
 

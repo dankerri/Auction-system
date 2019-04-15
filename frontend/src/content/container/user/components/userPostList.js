@@ -18,11 +18,29 @@ class UserPostList extends Component {
 
     async componentDidMount() {
         const url = theUrl+'/commodityList';
-        const payload = await fetch(url).then( res => res.json() )
+        // const payload = await fetch(url).then( res => res.json() )
+        const payload = await fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            method: 'post',
+            body: JSON.stringify({
+                status: 1,
+                username: this.props.auth.username
+            })
+        })
+        .then( res => res.json() )
+        
         this.setState({
           loading: false,
-          payload: payload.filter(item=>{return item.username === this.state.username})
+          payload: payload,
         })
+
+        // this.setState({
+        //   loading: false,
+        //   payload: payload.filter(item=>{return item.username === this.state.username})
+        // })
     }
 
     render() {

@@ -36,7 +36,13 @@ class App extends Component {
 
   async componentDidMount() {
     const url = theUrl+'/commodityList';
-    const payload = await fetch(url).then( res => res.json() )
+
+    const payload = await fetch(url, {
+      headers: tokenHeaders(localStorage.getItem("token")),
+      method: 'POST',
+      body: JSON.stringify({ })
+    }).then( res => res.json() )
+
     this.setState({
       loading: false,
       payload: payload
@@ -59,19 +65,19 @@ class App extends Component {
     const theRoutes = [
       {
         path: '/junk/books',
-        component: ()=>(<CardList payload={payload}  category={1}/>)
+        component: ()=>(<CardList payload={payload}  category={1} component={ShowCard}/>)
       },
       {
         path: '/junk/elect',
-        component: ()=>(<CardList payload={payload}  category={2}/>)
+        component: ()=>(<CardList payload={payload}  category={2} component={ShowCard}/>)
       },
       {
         path: '/junk/partTime',
-        component: ()=>(<CardList payload={payload}  category={3}/>)
+        component: ()=>(<CardList payload={payload}  category={3} component={ShowCard}/>)
       },
       {
         path: '/junk/others',
-        component: ()=>(<CardList payload={payload}  category={0}/>)
+        component: ()=>(<CardList payload={payload}  category={0} component={ShowCard}/>)
       }
     ]
 

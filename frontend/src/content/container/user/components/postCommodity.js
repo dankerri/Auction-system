@@ -16,7 +16,7 @@ const postCommodity = ({match, auth}) => {
             <Button type="primary">
                 <Link 
                     to={{
-                        pathname: "/user_profile/postedCommodity/newPost",
+                        pathname: "/user_profile/postCommodity/newPost",
                         state: {
                             username: auth.username
                         }
@@ -24,7 +24,7 @@ const postCommodity = ({match, auth}) => {
                 >Create New Post</Link>
             </Button>
             <Route 
-                path={"/user_profile/postedCommodity/newPost"}
+                path={"/user_profile/postCommodity/newPost"}
                 component={NewPost}
             />
 
@@ -110,7 +110,7 @@ class  newPost extends Component {
               .then(res => res.json())
               .then(res => {
                   if(res.post) {
-                    this.props.history.replace("/user_profile/postedCommodity")
+                    this.props.history.replace("/user_profile/postCommodity")
                   } else {
                       message.error("create commodity card failed")
                   }
