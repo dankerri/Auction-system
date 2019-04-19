@@ -19,9 +19,7 @@ class PostCard extends Component {
       super(props)
     }
 
-
     render() {
-      //if you need
       let { payload, category, component: StyleCard } = this.props
 
       // filter commodity, in default return all commodity
@@ -37,7 +35,6 @@ class PostCard extends Component {
           filterPayload.map((item)=> {
             return <Col  xs={24} xl={6}>
 
-              {/* <StyleCard item={item} /> */}
               <StyleCard item={item} />
             
             </Col>})

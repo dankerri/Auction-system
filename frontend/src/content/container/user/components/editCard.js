@@ -5,6 +5,7 @@ import {
     Button, Modal, Popconfirm, message
 } from 'antd'
 import Zmage from 'react-zmage'
+import { relativeTimeRounding } from 'moment';
 
 class EditCard extends Component {
     constructor(props) {
@@ -160,6 +161,7 @@ const DeleteIcon = ({cid}) => {
         .then(res=>{
             if(res.edit){
                 message.success("You already deleted the commodity card " + cid)
+                window.location.reload(true)
             } else {
                 message.error("Delete Failed")
             }

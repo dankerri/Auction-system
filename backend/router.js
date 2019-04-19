@@ -158,33 +158,6 @@ router.get('/userList', checkJwt({ secret: secret }), (req, res)=>{
   }
 })
 
-// return all valid commodity cards 
-// router.get('/commodityList', (req, res)=>{
-//       db.contentPool.query(
-//         squel.select()
-//         .from("commodity")
-//         .join("commodity_detail", null, "commodity.commodity_id = commodity_detail.commodity_id")
-//         .join("s_user_auth.user", null, "commodity.seller_id = s_user_auth.user.id")
-//         .join("s_user_auth.user_profile", null, "commodity.seller_id = s_user_auth.user_profile.user_id")
-//         .field("commodity.commodity_id as cid")
-//         .field("commodity_name")
-//         .field("price")
-//         .field("seller_id")
-//         .field("username")
-//         .field("post_time")
-//         .field("commodity_des")
-//         .field("category")
-//         .field("pic_num")
-//         .field("phone")
-//         .field("neckname")
-//         .where("status = 1")
-//         .order("cid", false)
-//         .toString(), 
-//         (err, row)=> {
-//           res.send(row)
-//       })
-// })
-
 // return commodity cards according to status and username
 router.post('/commodityList', (req, res)=>{
 

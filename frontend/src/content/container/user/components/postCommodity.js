@@ -7,7 +7,7 @@ import { theUrl , tokenHeaders, dateToDateTime  } from 'selfConfig'
 import UserPostList from './userPostList'
 
 
-
+ 
 // page structor
 const postCommodity = ({match, auth}) => {
     return(
@@ -29,7 +29,8 @@ const postCommodity = ({match, auth}) => {
             />
 
             {/* Show and manage commodity cards area */}
-            <UserPostList username={auth.username}/>
+            <UserPostList username={auth.username} />
+            }}/>
         </div>
     )
 }
@@ -111,6 +112,7 @@ class  newPost extends Component {
               .then(res => {
                   if(res.post) {
                     this.props.history.replace("/user_profile/postCommodity")
+                    window.location.reload()
                   } else {
                       message.error("create commodity card failed")
                   }
