@@ -140,10 +140,12 @@ class LoadZamge extends Component {
     }
 }
 
+// edit commodity card
 const EditIcon = ({showModal})=> {
     return (<Icon type="edit" onClick={showModal}/>)
 }
 
+// delete commodity card
 const DeleteIcon = ({cid}) => {
     const confirm = (e) => {
         const url = theUrl+'/deleteCommodity'
