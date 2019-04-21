@@ -22,9 +22,10 @@ class PostCard extends Component {
     render() {
       let { payload, category, component: StyleCard } = this.props
 
-      // filter commodity, when category minus than 0 , return all commodity
+      // filter commodity,  In default, it returns all commodity
       let cate = category || -1
       let filterPayload
+      
       if( cate < 0 ) {
         filterPayload = payload
       } else { 
@@ -34,9 +35,9 @@ class PostCard extends Component {
       return(
         <Row gutter={16 + 32} type="flex" justify="left">{
           filterPayload.map((item)=> {
-            return <Col  xs={24} xl={6}>
+            return <Col  xs={24} xl={6} >
 
-              <StyleCard item={item} />
+              <StyleCard item={item} key={item.cid}/>
             
             </Col>})
         }

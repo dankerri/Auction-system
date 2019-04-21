@@ -2,16 +2,20 @@ import React, { Component } from 'react'
 import { theUrl, dateTimeToDate } from 'selfConfig'
 import { 
     Card, Icon,
-    Button, Modal, Popconfirm, message
+    Popconfirm, message,
+    Button, Modal, Form, Input, Select,
 } from 'antd'
 import Zmage from 'react-zmage'
 import { relativeTimeRounding } from 'moment';
+import { getFileItem } from 'antd/lib/upload/utils';
 
 class EditCard extends Component {
     constructor(props) {
         super(props)
         this.handleOk = this.handleOk.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
+        this.handleCreate = this.handleCreate.bind(this)
+        this.saveFormRef = this.saveFormRef.bind(this)
         this.showModal = this.showModal.bind(this)
 
         this.state = {
@@ -32,17 +36,34 @@ class EditCard extends Component {
       }
     
     handleOk(e) {
-    console.log(e);
-    this.setState({
-        visible: false,
-    });
+      // console.log(e);
+      this.setState({
+          visible: false,
+      });
     }
 
     handleCancel(e) {
-    console.log(e);
-    this.setState({
-        visible: false,
-    });
+      // console.log(e);
+      this.setState({
+          visible: false,
+      });
+    }
+
+    handleCreate() {
+      const form = this.formRef.props.form;
+      form.validateFields((err, values) => {
+        if (err) {
+          return;
+        }
+
+        console.log('Received values of form: ', values);
+        form.resetFields();
+        this.setState({ visible: false });
+      });
+    }
+
+    saveFormRef = (formRef) => {
+      this.formRef = formRef;
     }
     
     render() {
@@ -75,22 +96,18 @@ class EditCard extends Component {
                           alignItems: "center"
                          }}
               >
-               {/* <img 
-                style={{ height: "20rem"}}
-                src={`${theUrl}/user/${item.username}_wx.jpg`} /> */}
                
               </div>
-    
-              {/* <h5>cid: {item.cid}</h5> */}
-    
-              <Modal
-                title="Basic Modal"
+
+              <CollectionCreateForm
+                wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}
-                onOk={this.handleOk}
                 onCancel={this.handleCancel}
-              >
-                  <h1>Hello world</h1>
-              </Modal>
+                onCreate={this.handleCreate}
+                payload={item}
+              />
+
+
             </Card>
         )
     }
@@ -140,44 +157,106 @@ class LoadZamge extends Component {
     }
 }
 
+// delete commodity card
+const DeleteIcon = ({cid}) => {
+  const confirm = (e) => {
+      const url = theUrl+'/deleteCommodity'
+      fetch(url, {
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          method: 'post',
+          body: JSON.stringify({
+              cid: cid
+          })
+      })
+      .then(res=>{ return res.json()})
+      .then(res=>{
+          if(res.edit){
+              message.success("You already deleted the commodity card " + cid)
+              window.location.reload(true)
+          } else {
+              message.error("Delete Failed")
+          }
+      })
+  }
+  return(
+      <Popconfirm
+          title="Are you sure delete this commodity card?"
+          onConfirm={confirm}
+      >
+          <Icon type="delete" />
+      </Popconfirm>
+  )
+}
+
 // edit commodity card
 const EditIcon = ({showModal})=> {
     return (<Icon type="edit" onClick={showModal}/>)
 }
 
-// delete commodity card
-const DeleteIcon = ({cid}) => {
-    const confirm = (e) => {
-        const url = theUrl+'/deleteCommodity'
-        fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            method: 'post',
-            body: JSON.stringify({
-                cid: cid
-            })
-        })
-        .then(res=>{ return res.json()})
-        .then(res=>{
-            if(res.edit){
-                message.success("You already deleted the commodity card " + cid)
-                window.location.reload(true)
-            } else {
-                message.error("Delete Failed")
-            }
-        })
-    }
-    return(
-        <Popconfirm
-            title="Are you sure delete this commodity card?"
-            onConfirm={confirm}
+// Modal within Form
+const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
+  // eslint-disable-next-line
+  class extends React.Component {
+    render() {
+      const {
+        visible, onCancel, onCreate, form, payload
+      } = this.props;
+      const { getFieldDecorator } = form;
+      const { Option } = Select
+
+      return (
+        <Modal
+          visible={visible}
+          title="Edit commodity card"
+          okText="Confirm edit"
+          onCancel={onCancel}
+          onOk={onCreate}
         >
-            <Icon type="delete" />
-        </Popconfirm>
-    )
-}
+          <Form layout="vertical">
+            <Form.Item label="Commodity">
+              {getFieldDecorator('commodity', {
+                initialValue: payload.commodity_name,
+                // rules: [{ required: true, message: 'Please input the name of commodity!' }],
+              })(
+                <Input />
+              )}
+            </Form.Item>
+            <Form.Item label="price">
+            {getFieldDecorator('price', {
+                initialValue: payload.price
+              })(
+                <Input />
+              )}
+            </Form.Item>
+            <Form.Item label="Description">
+              {getFieldDecorator('description', {
+                initialValue: payload.commodity_des,
+              })(<Input type="textarea" />)}
+            </Form.Item>
+            <Form.Item label="category">
+            {getFieldDecorator('category', {
+              initialValue: payload.category
+            })(
+              <Select>
+                    <Option value="1">书籍</Option>
+                    <Option value="2">电子产品</Option>
+                    <Option value="3">外快</Option>
+                    <Option value="0">others</Option>
+              </Select>
+            )}
+            </Form.Item>
+          </Form>
+        </Modal>
+      );
+    }
+  }
+);
+
+
+
 
 export default EditCard;
 

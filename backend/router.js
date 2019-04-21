@@ -418,4 +418,41 @@ router.post('/deleteCommodity', (req, res)=>{
   )
 })
 
+router.post('/updateCommodityCard', (req, res)=>{
+  let payload = req.body.payload
+  let cid = req.body.cid
+
+  db.contentPool.query(
+    squel.update()
+    .table("commodity")
+    .set("commodity_name = ?", payload.commodity_name)
+    .where("commodity_id = ?", cid)
+    .toString(),
+     (err, rows) => {
+      if(!err) {
+        db.contentPool.query(
+          squel.update()
+          .table("commodity_detail")
+          .set("price = ?", payload.price)
+          .set("commodity_des = ?", payload.commodity_des)
+          .set("category = ?", payload.category)
+          .where("commodity_id = ?", cid)
+          .toString(), (err, rows)=>{
+            if(!err) {
+              res.send({
+                update: true
+              })
+            } else {
+              res.send({
+                update: false
+              })
+            }
+          })
+      } else {
+        res.send({
+          update: false
+        })
+      }
+    })
+})
 module.exports = router;
