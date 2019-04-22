@@ -48,7 +48,7 @@ class UserPostList extends Component {
         return(
             <div>
                 <h1>Living Post List</h1>
-                <CardList payload={payload} component={EditCard} />
+                <CardList payload={payload} category={-1} component={EditCard} />
             </div>
         )
     }

@@ -17,32 +17,51 @@ import {
 class PostCard extends Component {
     constructor(props) {
       super(props)
+      let { payload, category } = this.props
+      this.state = {
+        payload: [],
+        category: ' '
+      }
     }
 
-    render() {
-      let { payload, category, component: StyleCard } = this.props
-
-      // filter commodity,  In default, it returns all commodity
-      let cate = category || -1
-      let filterPayload
-      
-      if( cate < 0 ) {
-        filterPayload = payload
-      } else { 
-        filterPayload = payload.filter(item=>{ return item.category === category })
+    static getDerivedStateFromProps(props, state) {
+      return {
+        payload: props.payload,
+        category: props.category,
+        loding: false
       }
+    }
 
-      return(
-        <Row gutter={16 + 32} type="flex" justify="left">{
-          filterPayload.map((item)=> {
-            return <Col  xs={24} xl={6} >
 
-              <StyleCard item={item} key={item.cid}/>
-            
-            </Col>})
+    render() {
+      if (!this.state.loding) {
+        let { component: StyleCard } = this.props
+        let { payload, category} = this.state
+
+
+        // filter commodity,  If category = -1 , it returns all commodity
+        let filterPayload        
+        if( category < 0 ) {
+          filterPayload = payload
+        } else { 
+          filterPayload = payload.filter(item=>{ return item.category === category })
         }
-        </Row>
-      )
+  
+        return(
+          <Row gutter={16 + 32} type="flex" justify="left">{
+            filterPayload.map((item)=> {
+              return <Col  xs={24} xl={6} >
+  
+                <StyleCard item={item} key={item.cid}/>
+              
+              </Col>})
+          }
+          </Row>
+        )
+      } else {
+        console.log(this.state.loading)
+        return <h1>Loding</h1>
+      }    
     }
     
 }
