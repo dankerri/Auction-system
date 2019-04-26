@@ -94,8 +94,11 @@ const Signup = (props) => {
         }
     }
     return(
-        <Form onSubmit={handleSubmit}>
-            <Form.Item>
+        <Form onSubmit={handleSubmit}
+            style={{ background:"#E1FFFF", width: "20rem", margin: "0 auto", marginTop: "2rem" , 
+            border:"solid 0.5px #E1FFFF", borderRadius: "2.5%", padding: "1rem" }}
+        >
+            <Form.Item label="Email">
             {getFieldDecorator('email', {
                 rules: [{
                     required: true, message: 'Please input your username'
@@ -107,7 +110,7 @@ const Signup = (props) => {
             (<Input placeholder="email"/>)}
             </Form.Item>
 
-            <Form.Item>
+            <Form.Item label="Password">
             {getFieldDecorator('password', {
                 rules: [{
                     required : true, message: 'Please input your message'
@@ -117,7 +120,7 @@ const Signup = (props) => {
             })(<Input type="password" placeholder="password"/>)}
             </Form.Item>
 
-            <Form.Item>
+            <Form.Item label="Input password again">
             {getFieldDecorator('confirm',{
                 rules: [{
                     required: true, message: 'Please input your password again'
