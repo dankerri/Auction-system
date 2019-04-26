@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { theUrl, dateTimeToDate } from 'selfConfig'
+import { theUrl, dateTimeToDate, tokenHeaders } from 'selfConfig'
 import { 
     Card, Icon,
     Popconfirm, message,
@@ -54,11 +54,44 @@ class EditCard extends Component {
       form.validateFields((err, values) => {
         if (err) {
           return;
+        } else {
+
+          const url  = theUrl + '/updateCommodityCard'
+          fetch(url, {       
+            headers: {
+                'Accept':'appliction/json',
+                'Content-Type':'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                cid: this.props.item.cid,
+                payload: {
+                  commodity_name: values.commodity,
+                  price: values.price,
+                  commodity_desc: values.desc,
+                  category: values.category
+                }
+            })
+          })
+          .then( res => { return res.json()})
+          .then( res => {
+            if(res.update) {
+              
+              window.location.reload()
+              // form.resetFields();
+              // this.setState({ visible: false });
+            } else {
+              message.error("edit failed")
+            }
+          })
+
+
+
         }
 
-        console.log('Received values of form: ', values);
-        form.resetFields();
-        this.setState({ visible: false });
+
+
+
       });
     }
 
@@ -232,7 +265,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
               )}
             </Form.Item>
             <Form.Item label="Description">
-              {getFieldDecorator('description', {
+              {getFieldDecorator('desc', {
                 initialValue: payload.commodity_des,
               })(<Input type="textarea" />)}
             </Form.Item>

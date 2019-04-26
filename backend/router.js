@@ -421,6 +421,8 @@ router.post('/deleteCommodity', (req, res)=>{
 router.post('/updateCommodityCard', (req, res)=>{
   let payload = req.body.payload
   let cid = req.body.cid
+  // console.log(payload)
+  // console.log(cid)
 
   db.contentPool.query(
     squel.update()
@@ -434,7 +436,7 @@ router.post('/updateCommodityCard', (req, res)=>{
           squel.update()
           .table("commodity_detail")
           .set("price = ?", payload.price)
-          .set("commodity_des = ?", payload.commodity_des)
+          .set("commodity_des = ?", payload.commodity_desc)
           .set("category = ?", payload.category)
           .where("commodity_id = ?", cid)
           .toString(), (err, rows)=>{
@@ -443,6 +445,7 @@ router.post('/updateCommodityCard', (req, res)=>{
                 update: true
               })
             } else {
+              // console.log("name wrong")
               res.send({
                 update: false
               })
