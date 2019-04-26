@@ -55,7 +55,7 @@ class HistroyCommodity extends Component {
     const { loading, payload } = this.state
    
     if( !loading ) {
-        return (<CardList payload={payload} component={ShowCard} />)
+        return (<CardList payload={payload} category={-1} component={ShowCard} />)
     } else {
       return(
         <h1>Loading</h1>
