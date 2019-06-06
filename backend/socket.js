@@ -1,8 +1,8 @@
 var io = require('socket.io')();
 
 io.on('connection', client=>{
-    client.on('update', data=>{
-        io.sockets.emit('update', data)
+    client.on('updateFromUser', data=>{
+        io.sockets.emit('updateFromServer', data)
     })
 })
 
