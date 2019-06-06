@@ -144,6 +144,7 @@ router.get('/commodityList', (req, res)=>{
     .field("commodity_desc")
     .field("buyer")
     .where('active = 1')
+    .order("cid", false)
     .toString(), 
     (err, rows)=> {
       if(err) {
@@ -154,7 +155,7 @@ router.get('/commodityList', (req, res)=>{
   })
 })
 
-
+//拍卖过程中价格和买家不停变化
 router.post('/price', (req, res)=>{
   console.log(req.body)
   db.contentPool.query(
@@ -163,6 +164,15 @@ router.post('/price', (req, res)=>{
     .set("price", req.body.price)
     .set("buyer", req.body.buyer)
     .toString(), ()=>{})
+})
+
+router.post('/end', (req, res)=>{
+  db.contentPool.query(
+    squel.update()
+    .table("commodity")
+    .set("status", 3)
+    .where("commodity_id = ?", req.body.cid)
+    .toString(),()=>{})
 })
 
 // ==============================================================================

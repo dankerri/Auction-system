@@ -2,11 +2,14 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
+import { Link } from 'react-router-dom'
+
+import { Button } from 'antd'
+
 import { theUrl, theSocket,tokenHeaders } from 'selfConfig'
 import ShowCard from './user/components/showCard'
 import Countdown from 'react-countdown-now'
 import { connect } from 'react-redux'
-import { LogoutButton } from './public_component/index'
 
 
 var io = require('socket.io-client');
@@ -30,7 +33,6 @@ class auction extends Component {
         price: res.data[0].price,
         buyer: res.data[0].buyer
       })
-      console.log(this.props.auth)
     })
   }
 
@@ -66,13 +68,16 @@ class auction extends Component {
       <div>
         <div style={{ fontSize:'40px'}}>
           <span>PRICE: </span>
-          <span style={{ color: "red"}}>{this.state.price}</span>
-          <span>, Mr.{this.state.buyer?this.state.buyer:'Nobody'}</span>
+          <span style={{ color: "blue"}}>{this.state.price}</span>
+          <div>
+            <span>Belongs to Mr.</span>
+            <span style={{ color: "blue"}}>{this.state.buyer?this.state.buyer:'Nobody'}</span>
+          </div>
         </div>
-        <button onClick={this.liftStep(5)}>+5</button>
-        <button onClick={this.liftStep(10)}>+10</button>
-        <button onClick={this.liftStep(50)}>+50</button>
-        <button onClick={this.liftStep(100)}>+100</button>
+        <Button size="large" onClick={this.liftStep(5)}>+5</Button>
+        <Button size="large" onClick={this.liftStep(10)}>+10</Button>
+        <Button size="large" onClick={this.liftStep(50)}>+50</Button>
+        <Button size="large" onClick={this.liftStep(100)}>+100</Button>
       </div>
     )
   }
@@ -126,9 +131,21 @@ class App extends Component {
     const renderer = ({ hours, minutes, seconds, completed }) => {
       if (completed) {
         // Render a completed state 
+        axios.post(theUrl+'/end', {
+          cid: item.cid
+        })
+
+
         return(
           <div>
-            <h1>FINAL PRICE: { this.state.price }, Mr.{ this.state.buyer }</h1>
+            <div style={{ fontSize:"30px"}}>
+              <span>FINAL PRICE: </span>
+              <span style={{ color: "red"}}>{ this.state.price }¥</span>
+            </div>
+            <div style={{ fontSize:"30px"}}>
+              <span>Belogns to </span>
+              <span style={{ color: "red"}}>Mr.{ this.state.buyer }</span>
+            </div>
             <h1>拍卖结束</h1>
           </div>
         ) 
@@ -148,10 +165,10 @@ class App extends Component {
       <div style={{textAlign:'center'}}>
         <ShowCard item={item}/>
         <Countdown 
-          date={start + 1000*60*60*6 + 1000*60*10.5 } 
+          date={start + 1000*60*60*15.85 } 
           renderer={renderer}
         />
-        <LogoutButton />
+        <Button  type="danger" ><Link to="/user_profile">Profile</Link></Button>
       </div>
     )
   }

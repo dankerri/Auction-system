@@ -47,7 +47,7 @@ const Login = (props) => {
             localStorage.setItem('username', res.username)
             localStorage.setItem('id', res.id)
 
-            props.history.replace("/")
+            props.history.replace("/user_profile")
 
         })
         .catch(e=> {

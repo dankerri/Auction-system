@@ -80,5 +80,4 @@ INSERT INTO
 commodity(price, post_time, commodity_name, commodity_desc, status, active) 
 VALUES
 ('22', '2019-06-06 07:58:00', 'cup', "This cup was uesd by Mea, It's very precious.", 2, 1);
-
-
+('100', '2019-06-06 07:58:00', 'joe的拳套', "这是joe使用过的拳套, It's very precious.", 2, 1);
