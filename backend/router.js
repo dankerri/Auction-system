@@ -142,6 +142,7 @@ router.get('/commodityList', (req, res)=>{
     .field("post_time")
     .field("commodity_name")
     .field("commodity_desc")
+    .field("buyer")
     .where('active = 1')
     .toString(), 
     (err, rows)=> {
@@ -155,11 +156,12 @@ router.get('/commodityList', (req, res)=>{
 
 
 router.post('/price', (req, res)=>{
-  console.log(req.body.price)
+  console.log(req.body)
   db.contentPool.query(
     squel.update()
     .table("commodity")
     .set("price", req.body.price)
+    .set("buyer", req.body.buyer)
     .toString(), ()=>{})
 })
 

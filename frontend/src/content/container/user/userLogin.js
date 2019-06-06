@@ -47,7 +47,7 @@ const Login = (props) => {
             localStorage.setItem('username', res.username)
             localStorage.setItem('id', res.id)
 
-            props.history.push("/user_profile")
+            props.history.replace("/")
 
         })
         .catch(e=> {
@@ -58,7 +58,7 @@ const Login = (props) => {
 
     return (
         <form onSubmit={login} >
-            <Link to="/junk">Back to Junk.</Link>
+            <Link to="/">Back to home.</Link>
             <h1>User Login</h1>
             <label>
                 <input 

@@ -5,25 +5,15 @@ import axios from 'axios'
 import { theUrl, theSocket,tokenHeaders } from 'selfConfig'
 import ShowCard from './user/components/showCard'
 import Countdown from 'react-countdown-now'
+import { connect } from 'react-redux'
+import { LogoutButton } from './public_component/index'
+
 
 var io = require('socket.io-client');
 const socket = io(theSocket)
 
 
-// import { connect } from 'react-redux'
-// import { Link, Route } from 'react-router-dom'
-// // import moment from 'moment'
-
-// const item = {
-//   cid: 37,
-//   pic_num: 1,
-//   price: '200',
-//   post_time: '2019-06-06 07:58:00',
-//   commmodity_name: 'my cup',
-//   commodity_desc: 'This cup was uesd by Mea, It\'s very precious.'
-// }
-
-class Auction extends Component {
+class auction extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -37,33 +27,47 @@ class Auction extends Component {
     axios.get(theUrl+'/commodityList')
     .then(res=>{
       this.setState({
-        price: res.data[0].price
+        price: res.data[0].price,
+        buyer: res.data[0].buyer
       })
+      console.log(this.props.auth)
     })
   }
 
   liftStep(n){
-    return () => {
-      socket.emit('updateFromUser', {
-        price: this.state.price + n
-      })
-      axios.post(theUrl+'/price', {
-        price: this.state.price + n
-      })
-    }
+      return (e) => {
+        e.preventDefault();
+        const { auth } = this.props
+        if(auth.username) {
+          socket.emit('updateFromUser', {
+            price: this.state.price + n,
+            buyer: auth.username
+          })
+          axios.post(theUrl+'/price', {
+            price: this.state.price + n,
+            buyer: auth.username
+          })
+        } else {
+          window.location.replace("/user_login")
+        }
+      }
   }
   
 
   render() {
     socket.on('updateFromServer', data =>{
-      this.setState({ price: data.price})
+      this.setState({ 
+        price: data.price,
+        buyer: data.buyer
+      })
     })
     
     return(
-      <div style={{ fontSize:'40px'}}>
-        <div>
+      <div>
+        <div style={{ fontSize:'40px'}}>
           <span>PRICE: </span>
           <span style={{ color: "red"}}>{this.state.price}</span>
+          <span>, Mr.{this.state.buyer?this.state.buyer:'Nobody'}</span>
         </div>
         <button onClick={this.liftStep(5)}>+5</button>
         <button onClick={this.liftStep(10)}>+10</button>
@@ -73,6 +77,11 @@ class Auction extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+const Auction = connect(mapStateToProps)(auction)
 
 
 
@@ -84,19 +93,21 @@ class App extends Component {
     this.state= {
       item: {}
     }
-    this.getCommodity = this.getCommodity.bind(this)
+    this.updateCommodityInfo = this.updateCommodityInfo.bind(this)
   }
 
   componentDidMount() {
-    this.getCommodity()
+    this.updateCommodityInfo()
   }
 
   // save commodity information into state
-  getCommodity() {
+  updateCommodityInfo() {
     axios.get(theUrl+'/commodityList')
     .then(res=>{
       this.setState({
-        item: res.data[0]
+        item: res.data[0],
+        price: res.data[0].price,
+        buyer: res.data[0].buyer
       })
     })
   }
@@ -105,13 +116,19 @@ class App extends Component {
     let { item }  = this.state
     let theDate = new Date(item.post_time)
     let start = theDate.getTime()
+    socket.on('updateFormServer', data =>{
+      this.setState({
+        price: data.price,
+        buyer: data.buyer
+      })
+    })
 
     const renderer = ({ hours, minutes, seconds, completed }) => {
       if (completed) {
-        // Render a completed state
+        // Render a completed state 
         return(
           <div>
-            <h1>FINAL PRICE: { this.state.item.price }</h1>
+            <h1>FINAL PRICE: { this.state.price }, Mr.{ this.state.buyer }</h1>
             <h1>拍卖结束</h1>
           </div>
         ) 
@@ -120,7 +137,7 @@ class App extends Component {
         return( 
           <div>
             <Auction />
-            <h2>距离拍卖结束还有</h2>
+            <h2 style={{marginTop: '5rem'}}>距离拍卖结束还有</h2>
             <h1>{hours}h:{minutes}m:{seconds}s</h1>
           </div>
         )
@@ -131,9 +148,10 @@ class App extends Component {
       <div style={{textAlign:'center'}}>
         <ShowCard item={item}/>
         <Countdown 
-          date={start + 1000*60*60*24 } 
+          date={start + 1000*60*60*6 + 1000*60*10.5 } 
           renderer={renderer}
         />
+        <LogoutButton />
       </div>
     )
   }
