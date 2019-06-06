@@ -208,7 +208,7 @@ const DeleteIcon = ({cid}) => {
       .then(res=>{
           if(res.edit){
               message.success("You already deleted the commodity card " + cid)
-              window.location.reload(true)
+              // window.location.reload(true)
           } else {
               message.error("Delete Failed")
           }

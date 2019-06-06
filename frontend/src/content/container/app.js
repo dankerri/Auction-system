@@ -1,147 +1,137 @@
-import { theUrl, tokenHeaders } from 'selfConfig'
-import CardList from './user/components/cardList'
-import ShowCard from './user/components/showCard'
-import { LogoutButton } from './public_component/index'
-
 
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Link, Route } from 'react-router-dom'
-// import moment from 'moment'
-import { 
-  Input, 
-  Layout, Menu, Icon
-} from 'antd'
-const TextArea = Input.TextArea
-const { Header, Content, Footer, Sider } = Layout
+import axios from 'axios'
+
+import { theUrl, theSocket,tokenHeaders } from 'selfConfig'
+import ShowCard from './user/components/showCard'
+import Countdown from 'react-countdown-now'
+
+var io = require('socket.io-client');
+const socket = io(theSocket)
+
+
+// import { connect } from 'react-redux'
+// import { Link, Route } from 'react-router-dom'
+// // import moment from 'moment'
 
 
 
 
+// const item = {
+//   cid: 37,
+//   pic_num: 1,
+//   price: '200',
+//   post_time: '2019-06-06 07:58:00',
+//   commmodity_name: 'my cup',
+//   commodity_desc: 'This cup was uesd by Mea, It\'s very precious.'
+// }
 
-
-
-
-
-
-class App extends Component {
+class Auction extends Component {
   constructor(props) {
     super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
     this.state = {
-      loading: true,
-      payload: [],
+      price: ''
     }
+
+    this.lift = this.lift.bind(this)
   }
 
-  async componentDidMount() {
-    const url = theUrl+'/commodityList';
-
-    const payload = await fetch(url, {
-      headers: tokenHeaders(localStorage.getItem("token")),
-      method: 'POST',
-      body: JSON.stringify({ })
-    }).then( res => res.json() )
-
-    this.setState({
-      loading: false,
-      payload: payload
+  componentDidMount() {
+    axios.get(theUrl+'/commodityList')
+    .then(res=>{
+      this.setState({
+        price: res.data[0].price
+      })
     })
   }
 
-
-  handleSubmit = () => {
-    if (!this.state.value) {
-      return;
-    }
+  lift(e) {
+    socket.emit('update', {
+      price: this.state.price + 1
+    })
+    axios.post(theUrl+'/price', {
+      price: this.state.price + 1
+    })
   }
 
   render() {
+    socket.on('update', data =>{
+      this.setState({ price: data.price})
+    })
     
-    const { loading, payload } = this.state
-    const SubMenu = Menu.SubMenu;
-    const MenuItemGroup = Menu.ItemGroup;
-
-    const theRoutes = [
-      {
-        path: '/junk/books',
-        component: ()=>(<CardList payload={payload}  category={1} component={ShowCard}/>)
-      },
-      {
-        path: '/junk/elect',
-        component: ()=>(<CardList payload={payload}  category={2} component={ShowCard}/>)
-      },
-      {
-        path: '/junk/partTime',
-        component: ()=>(<CardList payload={payload}  category={3} component={ShowCard}/>)
-      },
-      {
-        path: '/junk/others',
-        component: ()=>(<CardList payload={payload}  category={0} component={ShowCard}/>)
-      }
-    ]
-
-    if( !loading ) {
-      return(
-      <Layout>
-      <Header className="header">
-        <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['0']}
-          style={{ lineHeight: '64px' }}
-        >
-          <Menu.Item key="home"><Link to="/">Home</Link></Menu.Item>
-          <SubMenu title={<span className="submenu-title-wrapper"><Icon type="shopping" /><Link to="/junk">Junk</Link></span>}>
-              <Menu.Item key="setting:1"><Link to="/junk/books">书籍</Link></Menu.Item>
-              <Menu.Item key="setting:2"><Link to="/junk/elect">电子产品</Link></Menu.Item>
-              <Menu.Item key="setting:3"><Link to="/junk/partTime">外快</Link></Menu.Item>
-              <Menu.Item key="setting:4"><Link to="/junk/others">Others</Link></Menu.Item>
-          </SubMenu>
-          <Menu.Item key="profile"><Link to="/user_profile">Profile</Link></Menu.Item>
-          <Menu.Item key="signup"><Link to="/signup">Signup</Link></Menu.Item>
-          <Menu.Item key="logout"><LogoutButton /></Menu.Item>
-
-        </Menu>
-      </Header>
-
-      <Content style={{ padding: '65px 24px', minHeight: 280, background: '#ECECEC', }}>
-        <Route 
-        path="/junk" 
-        exact={true}
-        // if category = 1, show all commodity
-        component={()=>(<CardList payload={payload} category={-1} component={ShowCard} />)}/>
-        
-        {theRoutes.map((route, index)=>{
-          return <Route 
-            path={route.path} 
-            component={route.component} 
-            key={index}
-            />
-        })}
-        
-      </Content> 
-
-      <Footer style={{ textAlign: 'center' }}>
-        Nangua ©2018 Created by Danker
-      </Footer>
-      </Layout>)
-    } else {
-      return(
-        <h1>Loading</h1>
-      )
-    }
+    return(
+      <div style={{ fontSize:'40px'}}>
+        <span>PRICE: </span>
+        <span style={{ color: "red"}}>{this.state.price}</span>
+        <button onClick={this.lift}>up vote</button>
+      </div>
+    )
   }
-  
 }
 
 
 
-const mapStateToProps = state => ({
-  auth: state.auth
-})
+class App extends Component {
+  constructor() {
+    super()
+    this.state= {
+      item: {}
+    }
+    this.getCommodity = this.getCommodity.bind(this)
+  }
 
-export default connect(
-  mapStateToProps
-)(App)
+  componentDidMount() {
+    this.getCommodity()
+  }
+
+  getCommodity() {
+    axios.get(theUrl+'/commodityList')
+    .then(res=>{
+      this.setState({
+        item: res.data[0]
+      })
+    })
+  }
+  
+  render() {
+    let { item }  = this.state
+    let theDate = new Date(item.post_time)
+    let start = theDate.getTime()
+
+    const renderer = ({ hours, minutes, seconds, completed }) => {
+      if (completed) {
+        // Render a completed state
+        this.getCommodity()
+        
+        return(
+          <div>
+            <h1>FINAL PRICE: { this.state.item.price }</h1>
+            <h1>拍卖结束</h1>
+          </div>
+        ) 
+      } else {
+        // Render a countdown
+        return( 
+          <div>
+            <span>{hours}:{minutes}:{seconds}</span>
+            <Auction />
+          </div>
+        )
+      }
+    };
+    
+
+
+    return(
+      <div style={{textAlign:'center'}}>
+        <ShowCard item={item}/>
+        <Countdown 
+          date={start + 1000*60 } 
+          renderer={renderer}
+        />
+      </div>
+    )
+  }
+}
+
+export default App

@@ -9,20 +9,12 @@ var config = {
   password:'cctv..p,q'
 }
 
-var adminPool = mysql.createPool({
-  connectionLimit : 10,
-  host            : config.host,
-  user            : config.user,
-  password        : config.password,
-  database        : "s_admin_auth"
-});
-
 var userPool = mysql.createPool({
   connectionLimit : 10,
   host            : config.host,
   user            : config.user,
   password        : config.password,
-  database        : "s_user_auth"
+  database        : "sell"
 });
 
 var contentPool = mysql.createPool({
@@ -30,12 +22,12 @@ var contentPool = mysql.createPool({
   host            : config.host,
   user            : config.user,
   password        : config.password,
-  database        : "s_content"
+  database        : "sell"
 });
 
 
 module.exports = {
-  adminPool,
+  // adminPool,
   userPool,
   contentPool
 };

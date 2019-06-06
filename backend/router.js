@@ -105,35 +105,7 @@ router.post('/userLogin', (req, res) => {
   })
 })
 
-// In root dashboard, get the list of admin
-router.get('/adminList', checkJwt({ secret: secret }), (req, res)=> {
-  if (!req.user) {
-    res.send("token in request is unvaild")
-  } else {
-    // level 0 means root permission
-    if (! (req.user.level == 0 ) ) {
-      res.send("you don't have permission.")
-    } else {
-        db.adminPool.query(
-          squel.select()
-          .from("admin")
-          .join("admin_profile", null, "admin.id = admin_profile.user_id")
-          .field("admin.id")
-          .field("username")
-          .field("phone")
-          .toString(), 
-          (err, row)=> {
-            if (err) {
-      
-            } else {
-              res.send(row)
-              // debugging
-              console.log(row);
-            }
-        })
-    }
-  }
-})
+
 
 
 // In root or admin dashboard, manage users
@@ -158,35 +130,19 @@ router.get('/userList', checkJwt({ secret: secret }), (req, res)=>{
   }
 })
 
-// return commodity cards according to status and username
-router.post('/commodityList', (req, res)=>{
 
-  let username = req.body.username || '%%';
-  let status = req.body.status || 1
-  
-
-  // console.log(username+status)
-
+// 获取需要放在首页拍卖的商品数据
+router.get('/commodityList', (req, res)=>{
   db.contentPool.query(
     squel.select()
     .from("commodity")
-    .join("commodity_detail", null, "commodity.commodity_id = commodity_detail.commodity_id")
-    .join("s_user_auth.user", null, "commodity.seller_id = s_user_auth.user.id")
-    .join("s_user_auth.user_profile", null, "commodity.seller_id = s_user_auth.user_profile.user_id")
-    .field("commodity.commodity_id as cid")
-    .field("commodity_name")
-    .field("price")
-    .field("seller_id")
-    .field("username")
-    .field("post_time")
-    .field("commodity_des")
-    .field("category")
+    .field("commodity_id as cid")
     .field("pic_num")
-    .field("phone")
-    .field("neckname")
-    .where(`username like ?`, username)
-    .where(`status = ?`, status)
-    .order("cid", false)
+    .field("price")
+    .field("post_time")
+    .field("commodity_name")
+    .field("commodity_desc")
+    .where('active = 1')
     .toString(), 
     (err, rows)=> {
       if(err) {
@@ -195,6 +151,16 @@ router.post('/commodityList', (req, res)=>{
         res.send(rows)
       }
   })
+})
+
+
+router.post('/price', (req, res)=>{
+  console.log(req.body.price)
+  db.contentPool.query(
+    squel.update()
+    .table("commodity")
+    .set("price", req.body.price)
+    .toString(), ()=>{})
 })
 
 // ==============================================================================

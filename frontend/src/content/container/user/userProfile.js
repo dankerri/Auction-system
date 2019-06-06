@@ -23,22 +23,22 @@ const routes = [
         path: '/profile',
         component: Profile
     },
-    {
-        path: '/postCommodity',
-        component: postCommodity
-    },
-    {
-        path: '/historyCommodity',
-        component: HistoryCommodity
-    },
-    {
-        path: '/message',
-        component: Profile
-    },
-    {
-        path: '/wantedCommodity',
-        component: CommodityList
-    }
+    // {
+    //     path: '/postCommodity',
+    //     component: postCommodity
+    // },
+    // {
+    //     path: '/historyCommodity',
+    //     component: HistoryCommodity
+    // },
+    // {
+    //     path: '/message',
+    //     component: Profile
+    // },
+    // {
+    //     path: '/wantedCommodity',
+    //     component: Profile
+    // }
 ]
 
 // Get image from static source server
@@ -64,7 +64,7 @@ const Dashboard  = ({auth, match}) => {
                     <Menu.Item key="2"><Link to="/">HomePage</Link></Menu.Item>
                     <Avatar src={staticAdminUrl+"/default.png"} />
                     <Menu.Item key="1">{auth.username}</Menu.Item>
-                    <Menu.Item key="3"><Link to="/junk">Junk</Link></Menu.Item>
+                    {/* <Menu.Item key="3"><Link to="/junk">Junk</Link></Menu.Item> */}
                     <Menu.Item key="4"><LogoutButton /></Menu.Item>
                     </Menu>
                 </Header>
@@ -80,12 +80,12 @@ const Dashboard  = ({auth, match}) => {
                         defaultOpenKeys={['sub1']}
                         style={{ height: '100%', borderRight: 0 }}
                     >
-                        <Menu.Item key="1"><Link to="/user_profile/postCommodity">Post Commodity</Link></Menu.Item>
-                        <Menu.Item key="2"><Link to="/user_profile/historyCommodity">History Commodity</Link></Menu.Item>
+                        {/* <Menu.Item key="1"><Link to="/user_profile/postCommodity">Post Commodity</Link></Menu.Item>
+                        <Menu.Item key="2"><Link to="/user_profile/historyCommodity">History Commodity</Link></Menu.Item> */}
                         <Menu.Item key="3"><Link to="/user_profile/profile">Profile</Link></Menu.Item>
-                        <Menu.Item key="4"><Link to="/user_profile/message">Message</Link></Menu.Item>
+                        {/* <Menu.Item key="4"><Link to="/user_profile/message">Message</Link></Menu.Item> */}
                         {/* <Menu.Item key="4"><Link to="/user_profile/expiredCommodity">Expired Commodity</Link></Menu.Item> */}
-                        <Menu.Item key="5"><Link to="/user_profile/wantedCommodity">Wanted Commodity</Link></Menu.Item>
+                        {/* <Menu.Item key="5"><Link to="/user_profile/wantedCommodity">Wanted Commodity</Link></Menu.Item> */}
                     </Menu>
                     </Sider>
 

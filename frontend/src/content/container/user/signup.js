@@ -94,6 +94,8 @@ const Signup = (props) => {
         }
     }
     return(
+        <div>
+        <h1 style={{textAlign: "center"}}>Sign Up</h1>
         <Form onSubmit={handleSubmit}
             style={{ background:"#E1FFFF", width: "20rem", margin: "0 auto", marginTop: "2rem" , 
             border:"solid 0.5px #E1FFFF", borderRadius: "2.5%", padding: "1rem" }}
@@ -131,9 +133,13 @@ const Signup = (props) => {
             </Form.Item>
 
             <Form.Item>
-            <Button tpye="primary" htmlType="submit">sign up</Button>
+            <Button tpye="primary" htmlType="submit"
+            style={{ width: "100%"}}>
+                sign up
+            </Button>
             </Form.Item>
         </Form>
+        </div>
     )
 }
 
