@@ -13,6 +13,10 @@ var base64Img = require('base64-img')
 var thumb = require('node-thumbnail').thumb
 // self
 var db = require("./database/db");
+
+var moment = require('moment');
+var fs = require('fs')
+ 
 //=========================================================
 
 // secret key for token sign
@@ -155,7 +159,8 @@ router.get('/commodityList', (req, res)=>{
   })
 })
 
-router.get('/getCommodityList', (req, res)=>{
+// 获取所有未拍卖的商品(status =1)
+router.get('/getUnsellCommodityList', (req, res)=>{
   db.contentPool.query(
     squel.select()
     .from("commodity")
@@ -166,6 +171,7 @@ router.get('/getCommodityList', (req, res)=>{
     .field("commodity_name")
     .field("commodity_desc")
     .field("buyer")
+    .where("status = 1")
     .order("cid", false)
     .toString(), 
     (err, rows)=> {
@@ -188,11 +194,13 @@ router.post('/price', (req, res)=>{
     .toString(), ()=>{})
 })
 
+//将商品状态设置为拍卖结束, 并取消活动状态
 router.post('/end', (req, res)=>{
   db.contentPool.query(
     squel.update()
     .table("commodity")
     .set("status", 3)
+    .set("active", 0)
     .where("commodity_id = ?", req.body.cid)
     .toString(),()=>{})
 })
@@ -381,18 +389,21 @@ router.post('/uploadPic', (req,res)=> {
 
 }) 
 
-// delete commodity card
+// delete commodity card from post list
 router.post('/deleteCommodity', (req, res)=>{
-  console.log(req.body.cid);
+  const cid = req.body.cid
 
   db.contentPool.query(
-    squel.update()
-    .table("commodity")
-    .set("status", -1)
+    squel.delete()
+    .from("commodity")
     .where(`commodity_id = ${req.body.cid}`)
     .toString(),
     (err, rows)=>{
       if(!err) {
+        const file = `${cid}_0.jpg`
+        const thub = `${cid}_0_thumb.jpg`
+        fs.unlinkSync(`${__dirname}/public/commodity/${file}`)
+        fs.unlinkSync(`${__dirname}/public/commodity/${thub}`)
         res.send({ edit : true})
       } else {
         res.send({ edit: false})
@@ -402,6 +413,7 @@ router.post('/deleteCommodity', (req, res)=>{
   )
 })
 
+// update commodity card information
 router.post('/updateCommodityCard', (req, res)=>{
   let payload = req.body.payload
   let cid = req.body.cid
@@ -429,4 +441,30 @@ router.post('/updateCommodityCard', (req, res)=>{
       }
     })
 })
+
+// change active from 1 to 2
+router.post('/activePost', (req, res)=>{
+  const date = new Date()
+  const formatDate = (moment(new Date()).format('YYYY-MM-DD HH:mm:ss'))
+
+  db.contentPool.query(
+    squel.update()
+    .table("commodity")
+    .set("active = 1")
+    .set("status = 2")
+    .set("post_time = ?", formatDate)
+    .where(`commodity_id = ${req.body.cid}`)
+    .toString(),
+    (err, rows)=>{
+      if(!err) {
+        res.send({ edit : true})
+      } else {
+        res.send({ edit: false})
+        console.log(err)
+      }
+    }
+  )
+})
+
+
 module.exports = router;
