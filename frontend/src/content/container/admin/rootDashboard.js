@@ -9,7 +9,8 @@ import {
 // self
 import { theUrl } from 'selfConfig'
 import { LogoutButton, PreRoute } from '../public_component/index'
-import List from './components/list'
+// import List from './components/list'
+import PostCommodity from '../public_component/components/postCommodity'
 import UserList from './components/user_list'
 import CommodityList from './components/commodity_list'
 
@@ -20,7 +21,7 @@ import CommodityList from './components/commodity_list'
 const routes = [
     {
         path: '/admin',
-        component: List
+        component: PostCommodity
     },
     {
         path: '/user',
@@ -67,9 +68,9 @@ const Dashboard  = ({auth, match}) => {
                         defaultOpenKeys={['sub1']}
                         style={{ height: '100%', borderRight: 0 }}
                     >
-                        <Menu.Item key="1"><Link to="/root_dashboard/admin">Admin</Link></Menu.Item>
+                        <Menu.Item key="1"><Link to="/root_dashboard/admin">Post</Link></Menu.Item>
                         <Menu.Item key="2"><Link to="/root_dashboard/user">User</Link></Menu.Item>
-                        <Menu.Item key="3"><Link to="/root_dashboard/commodity">Commodity</Link></Menu.Item>
+                        <Menu.Item key="3"><Link to="/root_dashboard/commodity">History</Link></Menu.Item>
                     </Menu>
                     </Sider>
 

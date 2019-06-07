@@ -155,6 +155,28 @@ router.get('/commodityList', (req, res)=>{
   })
 })
 
+router.get('/getCommodityList', (req, res)=>{
+  db.contentPool.query(
+    squel.select()
+    .from("commodity")
+    .field("commodity_id as cid")
+    .field("pic_num")
+    .field("price")
+    .field("post_time")
+    .field("commodity_name")
+    .field("commodity_desc")
+    .field("buyer")
+    .order("cid", false)
+    .toString(), 
+    (err, rows)=> {
+      if(err) {
+        console.log(err)
+      } else {
+        res.send(rows)
+      }
+  })
+})
+
 //拍卖过程中价格和买家不停变化
 router.post('/price', (req, res)=>{
   console.log(req.body)
@@ -311,55 +333,39 @@ router.post('/editUserProfile', checkJwt({ secret: secret }), (req, res)=>{
 
 // create new commodity card
 router.post('/uploadPic', (req,res)=> {
-  // console.log(req.body.uid)
-  // console.log(req.body.cardPic)
+  console.log(" received require")
   const cardPic = req.body.cardPic
   const picNum = cardPic.length
+  let cid = '';
+
 
   db.contentPool.query(
     squel.insert()
     .into("commodity")
-    .set("seller_id",req.body.uid)
-    .set("commodity_name",req.body.commodity)
+    .set("commodity_name",req.body.commodity_name)
+    .set("price", req.body.price)
+    .set("commodity_desc", req.body.desc)
+    .set("pic_num", picNum)
     .toString(), (err, rows)=>{
-      if(!err) {
-        db.contentPool.query('select max(commodity_id) as cid from commodity', (err, row)=>{
-          cid = row[0].cid
-          db.contentPool.query(
-            squel.insert()
-            .into("commodity_detail")
-            .set("commodity_id", row[0].cid)
-            .set("price", req.body.price)
-            .set("post_time", req.body.post_time)
-            .set("commodity_des", req.body.des)
-            .set("pic_num", picNum)
-            .set("category", req.body.category)
-            .toString(),
-            (err, row) =>{
-              if(!err) {
-              // save photo
-              cardPic.map((pic, index)=>{
-                base64Img.img(pic.thumbUrl, __dirname+'/public/commodity', `${cid}_${index}`, (err, filePath)=>{
-                  if(!err) {
-                    thumb({
-                      source: filePath,
-                      destination: __dirname+'/public/commodity/',
-                      width: 400
-                    }, (files, err, stdout, stderr)=> {
-                      console.log("All done")
-                    })
-                  }
-                })
+    if(!err) {
+      const cid = rows.insertId
+      // save photo
+      cardPic.map((pic, index)=>{
+        base64Img.img(pic.thumbUrl, __dirname+'/public/commodity', `${cid}_${index}`, (err, filePath)=>{
+            if(!err) {
+              thumb({
+                source: filePath,
+                destination: __dirname+'/public/commodity/',
+                width: 400
+              }, (files, err, stdout, stderr)=> {
+                console.log("All done")
               })
-                console.log("insert detail successed")
-                res.send({
-                  post: true
-                })
-              } else {
-                console.log(err)
-              }
             }
-          )
+          })
+        })
+        console.log("insert detail successed")
+        res.send({
+          post: true
         })
       } else {
         res.send({
@@ -401,34 +407,21 @@ router.post('/updateCommodityCard', (req, res)=>{
   let cid = req.body.cid
   // console.log(payload)
   // console.log(cid)
+  console.log(req.body.payload)
 
   db.contentPool.query(
     squel.update()
     .table("commodity")
     .set("commodity_name = ?", payload.commodity_name)
+    .set("price = ?", payload.price)
+    .set("commodity_desc = ?", payload.commodity_desc)
     .where("commodity_id = ?", cid)
     .toString(),
      (err, rows) => {
       if(!err) {
-        db.contentPool.query(
-          squel.update()
-          .table("commodity_detail")
-          .set("price = ?", payload.price)
-          .set("commodity_des = ?", payload.commodity_desc)
-          .set("category = ?", payload.category)
-          .where("commodity_id = ?", cid)
-          .toString(), (err, rows)=>{
-            if(!err) {
-              res.send({
-                update: true
-              })
-            } else {
-              // console.log("name wrong")
-              res.send({
-                update: false
-              })
-            }
-          })
+        res.send({
+          update: true
+        })
       } else {
         res.send({
           update: false

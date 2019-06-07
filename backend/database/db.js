@@ -17,6 +17,14 @@ var userPool = mysql.createPool({
   database        : "sell"
 });
 
+var adminPool = mysql.createPool({
+  connectionLimit : 10,
+  host            : config.host,
+  user            : config.user,
+  password        : config.password,
+  database        : "sell"
+})
+
 var contentPool = mysql.createPool({
   connectionLimit : 10,
   host            : config.host,
@@ -27,7 +35,7 @@ var contentPool = mysql.createPool({
 
 
 module.exports = {
-  // adminPool,
+  adminPool,
   userPool,
   contentPool
 };
