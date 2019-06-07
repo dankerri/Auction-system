@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import axios from 'axios'
 
@@ -7,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Button } from 'antd'
 
 import { theUrl, theSocket,tokenHeaders } from 'selfConfig'
-import ShowCard from './public_component/components/showCard'
+import ShowCard from '../public_component/components/showCard'
 import Countdown from 'react-countdown-now'
 import { connect } from 'react-redux'
 
@@ -101,6 +100,7 @@ class App extends Component {
       item: {}
     }
     this.updateCommodityInfo = this.updateCommodityInfo.bind(this)
+    this.stopAuction = this.stopAuction.bind(this)
   }
 
   componentDidMount() {
@@ -119,8 +119,17 @@ class App extends Component {
         })
       }
 
-      console.log(res.data[0])
     })
+  }
+
+  stopAuction(cid) {
+    // console.log("cid = " + cid)
+    const url = theUrl+'/end'
+    axios.post(url, {
+      cid: cid
+    })
+    console.log("yeeeeep")
+    console.log(cid)
   }
   
   render() {
@@ -133,7 +142,7 @@ class App extends Component {
     socket.on('updateFormServer', data =>{
       this.setState({
         price: data.price,
-        buyer: data.buyer
+        buyer: data.buyerz
       })
     })
 
@@ -173,12 +182,12 @@ class App extends Component {
     if(item.price) {
       return(
         <div style={{textAlign:'center'}}>
-          <ShowCard item={item} />
+          <ShowCard item={item}/>
           <Countdown 
             date={start + 1000*60*60 } 
             renderer={renderer}
           />
-          <Button  type="danger" ><Link to="/user_profile">Profile</Link></Button>
+          <Button  type="danger" onClick={()=>{this.stopAuction(item.cid)} }>stop</Button>
         </div>
       )
     } else {

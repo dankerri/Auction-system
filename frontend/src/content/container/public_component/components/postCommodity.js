@@ -30,7 +30,6 @@ const postCommodity = ({match, auth}) => {
 
             {/* Show and manage commodity cards area */}
             <UserPostList username={auth.username} />
-            }}/>
         </div>
     )
 }
@@ -93,8 +92,8 @@ class  newPost extends Component {
               .then(res => res.json())
               .then(res => {
                   if(res.post) {
-                    this.props.history.replace("/root_dashboard")
-                    window.location.reload()
+                    this.props.history.replace("/root_dashboard/admin")
+                    window.location.replace("/root_dashboard/admin")
                   } else {
                       message.error("create commodity card failed")
                   }

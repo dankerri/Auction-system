@@ -9,7 +9,7 @@ const ShowCard = ({item}) => {
         <Card
         key={item.cid}
         hoverable
-        style={{ width: "100%", marginTop: 50, padding: "20px", }}
+        style={{ width: "50%", marginLeft: "auto", marginRight:"auto", marginTop:"2rem", padding: "20px", }}
         cover={<LoadZamge pic_num={item.pic_num} cid={item.cid}/>}
         > 
           {/* information */}

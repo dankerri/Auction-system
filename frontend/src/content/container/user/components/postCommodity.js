@@ -29,8 +29,6 @@ const postCommodity = ({match, auth}) => {
             />
 
             {/* Show and manage commodity cards area */}
-            <UserPostList username={auth.username} />
-            }}/>
         </div>
     )
 }

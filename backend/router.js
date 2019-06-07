@@ -183,6 +183,29 @@ router.get('/getUnsellCommodityList', (req, res)=>{
   })
 })
 
+router.get('/getSelledCommodityList', (req, res)=>{
+  db.contentPool.query(
+    squel.select()
+    .from("commodity")
+    .field("commodity_id as cid")
+    .field("pic_num")
+    .field("price")
+    .field("post_time")
+    .field("commodity_name")
+    .field("commodity_desc")
+    .field("buyer")
+    .where("status = 3")
+    .order("cid", false)
+    .toString(), 
+    (err, rows)=> {
+      if(err) {
+        console.log(err)
+      } else {
+        res.send(rows)
+      }
+  })
+})
+
 //拍卖过程中价格和买家不停变化
 router.post('/price', (req, res)=>{
   console.log(req.body)
@@ -196,6 +219,7 @@ router.post('/price', (req, res)=>{
 
 //将商品状态设置为拍卖结束, 并取消活动状态
 router.post('/end', (req, res)=>{
+  console.log(req.body.cid)
   db.contentPool.query(
     squel.update()
     .table("commodity")

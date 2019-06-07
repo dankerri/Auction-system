@@ -13,12 +13,17 @@ import { LogoutButton, PreRoute } from '../public_component/index'
 import PostCommodity from '../public_component/components/postCommodity'
 import UserList from './components/user_list'
 import CommodityList from './components/commodity_list'
+import Activing from './activing'
 
 
 // ===================================================================================================
 
 // route config
 const routes = [
+    {
+        path: '/activing',
+        component: Activing
+    },
     {
         path: '/admin',
         component: PostCommodity
@@ -68,13 +73,14 @@ const Dashboard  = ({auth, match}) => {
                         defaultOpenKeys={['sub1']}
                         style={{ height: '100%', borderRight: 0 }}
                     >
-                        <Menu.Item key="1"><Link to="/root_dashboard/admin">Post</Link></Menu.Item>
-                        <Menu.Item key="2"><Link to="/root_dashboard/user">User</Link></Menu.Item>
-                        <Menu.Item key="3"><Link to="/root_dashboard/commodity">History</Link></Menu.Item>
+                        <Menu.Item key="1"><Link to="/root_dashboard/activing">Activing</Link></Menu.Item>
+                        <Menu.Item key="2"><Link to="/root_dashboard/admin">Post</Link></Menu.Item>
+                        <Menu.Item key="3"><Link to="/root_dashboard/user">User</Link></Menu.Item>
+                        <Menu.Item key="4"><Link to="/root_dashboard/commodity">History</Link></Menu.Item>
                     </Menu>
                     </Sider>
 
-                    <Content>
+                    <Content style={{ padding: "2rem"}}>
                         {routes.map((route, index) => (
                             <PreRoute 
                                 key={index}

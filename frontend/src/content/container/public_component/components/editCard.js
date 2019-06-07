@@ -101,7 +101,7 @@ class EditCard extends Component {
             hoverable
             style={{ width: "100%", marginTop: 50, padding: "20px", }}
             cover={<LoadZamge pic_num={item.pic_num} cid={item.cid}/>}
-            actions={[ <EditIcon showModal={this.showModal}/>, <DeleteIcon cid={item.cid}/>]}
+            actions={[ <EditIcon showModal={this.showModal}/>, <PostIcon cid={item.cid}/>, <DeleteIcon cid={item.cid}/>]}
             > 
               {/* information */}
               <div>
@@ -178,6 +178,40 @@ class LoadZamge extends Component {
     }
 }
 
+// active post, change status from 1 to 2
+const PostIcon = ({cid}) => {
+  const confirm = (e) => {
+    const url = theUrl+'/activePost'
+    fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        method: 'post',
+        body: JSON.stringify({
+            cid: cid
+        })
+    })
+    .then(res=>{ return res.json()})
+    .then(res=>{
+        if(res.edit){
+            message.success("You already active the commodity card " + cid)
+            window.location.replace('/root_dashboard/admin');
+        } else {
+            message.error("active Failed")
+        }
+    })
+}
+return(
+    <Popconfirm
+        title="Are you sure active this commodity card?"
+        onConfirm={confirm}
+    >
+        <Icon type="barcode" />
+    </Popconfirm>
+)
+}
+
 // delete commodity card
 const DeleteIcon = ({cid}) => {
   const confirm = (e) => {
@@ -196,7 +230,7 @@ const DeleteIcon = ({cid}) => {
       .then(res=>{
           if(res.edit){
               message.success("You already deleted the commodity card " + cid)
-              // window.location.reload(true)
+              window.location.reload(true)
           } else {
               message.error("Delete Failed")
           }
