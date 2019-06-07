@@ -16,6 +16,9 @@ var db = require("./database/db");
 
 var moment = require('moment');
 var fs = require('fs')
+
+var io = require('socket.io-client');
+const socket = io('192.168.0.104:7000')
  
 //=========================================================
 
@@ -208,25 +211,31 @@ router.get('/getSelledCommodityList', (req, res)=>{
 
 //拍卖过程中价格和买家不停变化
 router.post('/price', (req, res)=>{
-  console.log(req.body)
+  console.log(req.body.cid)
   db.contentPool.query(
     squel.update()
     .table("commodity")
     .set("price", req.body.price)
     .set("buyer", req.body.buyer)
+    .where("commodity_id = ?", req.body.cid)
     .toString(), ()=>{})
 })
 
 //将商品状态设置为拍卖结束, 并取消活动状态
 router.post('/end', (req, res)=>{
   console.log(req.body.cid)
+
   db.contentPool.query(
     squel.update()
     .table("commodity")
     .set("status", 3)
     .set("active", 0)
     .where("commodity_id = ?", req.body.cid)
-    .toString(),()=>{})
+    .toString(),(err, rows)=>{
+      if(!err) {
+        socket.emit('end')
+      }
+    })
 })
 
 // ==============================================================================

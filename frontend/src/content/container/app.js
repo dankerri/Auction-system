@@ -32,7 +32,7 @@ class auction extends Component {
       if(res.data[0].price) {
         this.setState({
           price: res.data[0].price,
-          buyer: res.data[0].buyer
+          buyer: res.data[0].buyer,
         })
       }
     })
@@ -45,11 +45,12 @@ class auction extends Component {
         if(auth.username) {
           socket.emit('updateFromUser', {
             price: this.state.price + n,
-            buyer: auth.username
+            buyer: auth.username,
           })
           axios.post(theUrl+'/price', {
             price: this.state.price + n,
-            buyer: auth.username
+            buyer: auth.username,
+            cid: this.props.cid
           })
         } else {
           window.location.replace("/user_login")
@@ -162,7 +163,7 @@ class App extends Component {
         // Render a countdown
         return( 
           <div>
-            <Auction />
+            <Auction cid={item.cid}/>
             <h2 style={{marginTop: '5rem'}}>距离拍卖结束还有</h2>
             <h1>{hours}h:{minutes}m:{seconds}s</h1>
           </div>
